@@ -2,10 +2,7 @@ package pl.pozadr.ksb2;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +35,7 @@ public class CarApi {
         if (first.isPresent()) {
             return new ResponseEntity<>(first.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/color/{color}")
@@ -47,9 +44,18 @@ public class CarApi {
                 .filter(video -> video.getColor().equals(color))
                 .collect(Collectors.toList());
         if (!allCarsInColor.isEmpty()) {
-            return new ResponseEntity<>(allCarsInColor, HttpStatus.OK);
+            return new ResponseEntity(allCarsInColor, HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping
+    public ResponseEntity addCar(@RequestBody Car newCar) {
+        boolean addNewCar = carList.add(newCar);
+        if (addNewCar) {
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
