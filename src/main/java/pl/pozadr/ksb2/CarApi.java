@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,5 +59,41 @@ public class CarApi {
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PutMapping
+    public ResponseEntity modifyCar(@RequestBody Car modifiedCar) {
+        Optional<Car> firstCarOnList = carList.stream()
+                .filter(car -> car.getId() == modifiedCar.getId())
+                .findFirst();
+        if (firstCarOnList.isPresent()) {
+            carList.remove(firstCarOnList.get());
+            carList.add(modifiedCar);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping("/newmark/{newMark}")
+    public ResponseEntity modifyCarMark(@PathVariable String newMark) {
+        Optional<Car> first = carList.stream()
+                .filter(car -> car.getMark().equals(newMark))
+                .findFirst();
+        if (first.isPresent()) {
+            first.get().setMark(newMark);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Car> modifyCar(@PathVariable long id) {
+        Optional<Car> first = carList.stream()
+                .filter(car -> car.getId() == id)
+                .findFirst();
+        if (first.isPresent()) {
+            carList.remove(first.get());
+            return new ResponseEntity(first.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
 
 }
