@@ -72,13 +72,37 @@ public class CarApi {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @PatchMapping("/newmark/{newMark}")
-    public ResponseEntity modifyCarMark(@PathVariable String newMark) {
+    @PatchMapping("/mark/{id}")
+    public ResponseEntity modifyCarMark(@PathVariable long id, @RequestParam String newMark) {
         Optional<Car> first = carList.stream()
-                .filter(car -> car.getMark().equals(newMark))
+                .filter(car -> car.getId() == (id))
                 .findFirst();
         if (first.isPresent()) {
             first.get().setMark(newMark);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping("/model/{id}")
+    public ResponseEntity modifyCarModel(@PathVariable long id, @RequestParam String newModel) {
+        Optional<Car> first = carList.stream()
+                .filter(car -> car.getId() == (id))
+                .findFirst();
+        if (first.isPresent()) {
+            first.get().setModel(newModel);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping("/color/{id}")
+    public ResponseEntity modifyCarColor(@PathVariable long id, @RequestParam String newColor) {
+        Optional<Car> first = carList.stream()
+                .filter(car -> car.getId() == (id))
+                .findFirst();
+        if (first.isPresent()) {
+            first.get().setColor(newColor);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
