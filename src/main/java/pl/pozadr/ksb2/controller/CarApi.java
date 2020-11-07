@@ -21,9 +21,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RequestMapping(path = "/cars", produces = {
         MediaType.APPLICATION_JSON_VALUE, //default
         MediaType.APPLICATION_XML_VALUE,
-        })
+})
 public class CarApi {
-    private CarServiceImpl carServiceImpl;
+    private final CarServiceImpl carServiceImpl;
 
     @Autowired
     public CarApi(CarServiceImpl carServiceImpl) {
@@ -35,11 +35,12 @@ public class CarApi {
         if (!carServiceImpl.getCarList().isEmpty()) {
             List<Car> allCars = carServiceImpl.getCarList();
             allCars.forEach(car -> car.add(linkTo(CarApi.class).slash(car.getId()).withSelfRel()));
-            Link link = linkTo(CarApi.class).withSelfRel();
+            Link link = linkTo(CarApi.class)
+                    .withSelfRel();
             CollectionModel<Car> carEntityModel = CollectionModel.of(allCars, link);
-            return new ResponseEntity(carEntityModel, HttpStatus.OK);
+            return ResponseEntity.ok(carEntityModel);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
 
 
@@ -48,10 +49,10 @@ public class CarApi {
         Optional<Car> first = carServiceImpl.getCarByID(id);
         if (first.isPresent()) {
             Link link = linkTo(CarApi.class).slash(id).withSelfRel();
-            EntityModel<Car> carEntityModel = EntityModel.of(first.get(),link);
-            return new ResponseEntity<>(carEntityModel, HttpStatus.OK);
+            EntityModel<Car> carEntityModel = EntityModel.of(first.get(), link);
+            return ResponseEntity.ok(carEntityModel);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
 
 
@@ -63,9 +64,9 @@ public class CarApi {
             allCarsInColor.forEach(car -> car.add(linkTo(CarApi.class).withRel("allColors")));
             Link link = linkTo(CarApi.class).withSelfRel();
             CollectionModel<Car> carEntityModel = CollectionModel.of(allCarsInColor, link);
-            return new ResponseEntity(carEntityModel, HttpStatus.OK);
+            return ResponseEntity.ok(carEntityModel);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
 
 
@@ -73,9 +74,9 @@ public class CarApi {
     public ResponseEntity addCar(@RequestBody Car newCar) {
         boolean isAdded = carServiceImpl.addNewCar(newCar);
         if (isAdded) {
-            return new ResponseEntity(HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         }
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
 
@@ -85,21 +86,21 @@ public class CarApi {
         if (carToRemove.isPresent()) {
             boolean isRemoved = carServiceImpl.deleteCar(id);
             if (isRemoved) {
-                return new ResponseEntity(carToRemove, HttpStatus.OK);
+                return ResponseEntity.ok(carToRemove.get());
             }
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
 
 
     @PutMapping
-    public ResponseEntity modifyCar(@RequestBody Car modifiedCar) {
+    public ResponseEntity<Car> modifyCar(@RequestBody Car modifiedCar) {
         boolean isRemoved = carServiceImpl.deleteCar(modifiedCar.getId());
         boolean isAdded = carServiceImpl.addNewCar(modifiedCar);
         if (isRemoved && isAdded) {
-            return new ResponseEntity(HttpStatus.OK);
+            return ResponseEntity.ok(modifiedCar);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
 
 
@@ -108,9 +109,9 @@ public class CarApi {
                                                  @PathVariable String value) {
         boolean isModified = carServiceImpl.modifyCarProperty(id, property, value);
         if (isModified) {
-            return new ResponseEntity(carServiceImpl.getCarByID(id), HttpStatus.OK);
+            return ResponseEntity.ok(carServiceImpl.getCarByID(id).get());
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
 
 
