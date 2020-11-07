@@ -2,6 +2,7 @@ package pl.pozadr.ksb2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pozadr.ksb2.service.CarService;
@@ -13,7 +14,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/cars")
+@RequestMapping(path = "/cars", produces = {
+        MediaType.APPLICATION_XML_VALUE,
+        MediaType.APPLICATION_JSON_VALUE})
 public class CarApi {
     private CarService carService;
 
