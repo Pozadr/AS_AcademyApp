@@ -56,10 +56,14 @@ public class CarApi {
 
 
     @GetMapping("/color/{color}")
-    public ResponseEntity<List<Car>> getCarsByColor(@PathVariable String color) {
+    public ResponseEntity<CollectionModel<Car>> getCarsByColor(@PathVariable String color) {
         List<Car> allCarsInColor = carServiceImpl.getCarsByColor(Color.valueOf(color));
         if (!allCarsInColor.isEmpty()) {
-            return new ResponseEntity(allCarsInColor, HttpStatus.OK);
+            allCarsInColor.forEach(car -> car.add(linkTo(CarApi.class).slash(car.getId()).withSelfRel()));
+            allCarsInColor.forEach(car -> car.add(linkTo(CarApi.class).withRel("allColors")));
+            Link link = linkTo(CarApi.class).withSelfRel();
+            CollectionModel<Car> carEntityModel = CollectionModel.of(allCarsInColor, link);
+            return new ResponseEntity(carEntityModel, HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
