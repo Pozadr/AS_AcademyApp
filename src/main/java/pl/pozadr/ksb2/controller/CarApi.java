@@ -5,30 +5,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.pozadr.ksb2.service.CarService;
+import pl.pozadr.ksb2.service.CarServiceImpl;
 import pl.pozadr.ksb2.model.Car;
 import pl.pozadr.ksb2.model.Color;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/cars", produces = {
         MediaType.APPLICATION_XML_VALUE,
         MediaType.APPLICATION_JSON_VALUE})
 public class CarApi {
-    private CarService carService;
+    private CarServiceImpl carServiceImpl;
 
     @Autowired
-    public CarApi(CarService carService) {
-        this.carService = carService;
+    public CarApi(CarServiceImpl carServiceImpl) {
+        this.carServiceImpl = carServiceImpl;
     }
 
     @GetMapping
     public ResponseEntity<List<Car>> getCars() {
-        if (!carService.getCarList().isEmpty()) {
-            return new ResponseEntity(carService.getCarList(), HttpStatus.OK);
+        if (!carServiceImpl.getCarList().isEmpty()) {
+            return new ResponseEntity(carServiceImpl.getCarList(), HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
@@ -36,7 +35,7 @@ public class CarApi {
 
     @GetMapping("/{id}")
     public ResponseEntity<Car> getCarById(@PathVariable long id) {
-        Optional<Car> first = carService.getCarByID(id);
+        Optional<Car> first = carServiceImpl.getCarByID(id);
         if (first.isPresent()) {
             return new ResponseEntity<>(first.get(), HttpStatus.OK);
         }
@@ -46,7 +45,7 @@ public class CarApi {
 
     @GetMapping("/color/{color}")
     public ResponseEntity<List<Car>> getCarsByColor(@PathVariable String color) {
-        List<Car> allCarsInColor = carService.getCarsByColor(Color.valueOf(color));
+        List<Car> allCarsInColor = carServiceImpl.getCarsByColor(Color.valueOf(color));
         if (!allCarsInColor.isEmpty()) {
             return new ResponseEntity(allCarsInColor, HttpStatus.OK);
         }
@@ -56,7 +55,7 @@ public class CarApi {
 
     @PostMapping
     public ResponseEntity addCar(@RequestBody Car newCar) {
-        boolean isAdded = carService.addNewCar(newCar);
+        boolean isAdded = carServiceImpl.addNewCar(newCar);
         if (isAdded) {
             return new ResponseEntity(HttpStatus.CREATED);
         }
@@ -66,9 +65,9 @@ public class CarApi {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Car> modifyCar(@PathVariable long id) {
-        Optional<Car> carToRemove = carService.getCarByID(id);
+        Optional<Car> carToRemove = carServiceImpl.getCarByID(id);
         if (carToRemove.isPresent()) {
-            boolean isRemoved = carService.deleteCar(id);
+            boolean isRemoved = carServiceImpl.deleteCar(id);
             if (isRemoved) {
                 return new ResponseEntity(carToRemove, HttpStatus.OK);
             }
@@ -79,8 +78,8 @@ public class CarApi {
 
     @PutMapping
     public ResponseEntity modifyCar(@RequestBody Car modifiedCar) {
-        boolean isRemoved = carService.deleteCar(modifiedCar.getId());
-        boolean isAdded = carService.addNewCar(modifiedCar);
+        boolean isRemoved = carServiceImpl.deleteCar(modifiedCar.getId());
+        boolean isAdded = carServiceImpl.addNewCar(modifiedCar);
         if (isRemoved && isAdded) {
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -91,9 +90,9 @@ public class CarApi {
     @PatchMapping("/{id}/{property}/{value}")
     public ResponseEntity<Car> modifyCarProperty(@PathVariable long id, @PathVariable String property,
                                                  @PathVariable String value) {
-        boolean isModified = carService.modifyCarProperty(id, property, value);
+        boolean isModified = carServiceImpl.modifyCarProperty(id, property, value);
         if (isModified) {
-            return new ResponseEntity(carService.getCarByID(id), HttpStatus.OK);
+            return new ResponseEntity(carServiceImpl.getCarByID(id), HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
