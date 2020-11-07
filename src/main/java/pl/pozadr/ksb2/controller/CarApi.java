@@ -1,6 +1,9 @@
 package pl.pozadr.ksb2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +15,13 @@ import pl.pozadr.ksb2.model.Color;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 @RestController
 @RequestMapping(path = "/cars", produces = {
+        MediaType.APPLICATION_JSON_VALUE, //default
         MediaType.APPLICATION_XML_VALUE,
-        MediaType.APPLICATION_JSON_VALUE})
+        })
 public class CarApi {
     private CarServiceImpl carServiceImpl;
 
@@ -25,19 +31,25 @@ public class CarApi {
     }
 
     @GetMapping
-    public ResponseEntity<List<Car>> getCars() {
+    public ResponseEntity<CollectionModel<Car>> getCars() {
         if (!carServiceImpl.getCarList().isEmpty()) {
-            return new ResponseEntity(carServiceImpl.getCarList(), HttpStatus.OK);
+            List<Car> allCars = carServiceImpl.getCarList();
+            allCars.forEach(car -> car.add(linkTo(CarApi.class).slash(car.getId()).withSelfRel()));
+            Link link = linkTo(CarApi.class).withSelfRel();
+            CollectionModel<Car> carEntityModel = CollectionModel.of(allCars, link);
+            return new ResponseEntity(carEntityModel, HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Car> getCarById(@PathVariable long id) {
+    public ResponseEntity<EntityModel<Car>> getCarById(@PathVariable long id) {
         Optional<Car> first = carServiceImpl.getCarByID(id);
         if (first.isPresent()) {
-            return new ResponseEntity<>(first.get(), HttpStatus.OK);
+            Link link = linkTo(CarApi.class).slash(id).withSelfRel();
+            EntityModel<Car> carEntityModel = EntityModel.of(first.get(),link);
+            return new ResponseEntity<>(carEntityModel, HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
