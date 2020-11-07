@@ -2,12 +2,24 @@ package pl.pozadr.ksb2.model;
 
 import org.springframework.hateoas.RepresentationModel;
 
-public class Car extends RepresentationModel<Car> {
-    private long id;
-    private String mark;
-    private String model;
-    private Color color;
+import javax.validation.constraints.*;
 
+public class Car extends RepresentationModel<Car> {
+    @NotNull
+    @Min(1)
+    private long id;
+
+    @NotNull
+    @NotBlank
+    private String mark;
+
+    @NotNull
+    @NotBlank
+    private String model;
+
+    @NotNull
+    @NotBlank
+    private Color color;
 
     public Car(long id, String mark, String model, Color color) {
         this.id = id;

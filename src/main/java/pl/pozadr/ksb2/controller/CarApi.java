@@ -7,6 +7,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.pozadr.ksb2.service.CarServiceImpl;
 import pl.pozadr.ksb2.model.Car;
@@ -71,7 +72,7 @@ public class CarApi {
 
 
     @PostMapping
-    public ResponseEntity addCar(@RequestBody Car newCar) {
+    public ResponseEntity addCar(@Validated @RequestBody Car newCar) {
         boolean isAdded = carServiceImpl.addNewCar(newCar);
         if (isAdded) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -94,7 +95,7 @@ public class CarApi {
 
 
     @PutMapping
-    public ResponseEntity<Car> modifyCar(@RequestBody Car modifiedCar) {
+    public ResponseEntity<Car> modifyCar(@Validated @RequestBody Car modifiedCar) {
         boolean isRemoved = carServiceImpl.deleteCar(modifiedCar.getId());
         boolean isAdded = carServiceImpl.addNewCar(modifiedCar);
         if (isRemoved && isAdded) {
