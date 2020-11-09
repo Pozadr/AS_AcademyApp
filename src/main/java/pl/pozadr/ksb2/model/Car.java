@@ -1,24 +1,26 @@
 package pl.pozadr.ksb2.model;
 
 import org.springframework.hateoas.RepresentationModel;
+import pl.pozadr.ksb2.controller.CarApi;
 
 import javax.validation.constraints.*;
 
 public class Car extends RepresentationModel<Car> {
-    @NotNull
-    @Min(1)
+    @NotNull(message = "ID cannot be null.")
+    @Min(value = 1, message = "ID must be greater than 1.")
     private long id;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Mark cannot be null.")
+    @NotBlank(message = "Mark cannot be blank.")
+    @Size(min = 1, message = "Mark must have at least 1 character length.")
     private String mark;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Model cannot be null.")
+    @NotBlank(message = "Model cannot be blank.")
+    @Size(min = 1, message = "Model must have at least 1 character length.")
     private String model;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Color cannot be null.")
     private Color color;
 
     public Car(long id, String mark, String model, Color color) {

@@ -7,14 +7,15 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import pl.pozadr.ksb2.service.CarServiceImpl;
 import pl.pozadr.ksb2.model.Car;
 import pl.pozadr.ksb2.model.Color;
 
-import java.util.List;
-import java.util.Optional;
+import javax.validation.Valid;
+import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -35,7 +36,7 @@ public class CarApi {
     public ResponseEntity<CollectionModel<Car>> getCars() {
         if (!carServiceImpl.getCarList().isEmpty()) {
             List<Car> allCars = carServiceImpl.getCarList();
-            allCars.forEach(car -> car.add(linkTo(CarApi.class).slash(car.getId()).withSelfRel()));
+            allCars.forEach(car -> car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class).slash(car.getId()).withSelfRel()));
             Link link = linkTo(CarApi.class)
                     .withSelfRel();
             CollectionModel<Car> carEntityModel = CollectionModel.of(allCars, link);
@@ -50,7 +51,8 @@ public class CarApi {
         Optional<Car> first = carServiceImpl.getCarByID(id);
         if (first.isPresent()) {
             Link link = linkTo(CarApi.class).slash(id).withSelfRel();
-            EntityModel<Car> carEntityModel = EntityModel.of(first.get(), link);
+            //EntityModel<Car> carEntityModel = EntityModel.of(first.get(), link);
+            EntityModel<Car> carEntityModel = first.map(car -> new EntityModel(car.addIf(!car.hasLinks(), () -> link))).get();
             return ResponseEntity.ok(carEntityModel);
         }
         return ResponseEntity.notFound().build();
@@ -61,25 +63,40 @@ public class CarApi {
     public ResponseEntity<CollectionModel<Car>> getCarsByColor(@PathVariable String color) {
         List<Car> allCarsInColor = carServiceImpl.getCarsByColor(Color.valueOf(color));
         if (!allCarsInColor.isEmpty()) {
-            allCarsInColor.forEach(car -> car.add(linkTo(CarApi.class).slash(car.getId()).withSelfRel()));
-            allCarsInColor.forEach(car -> car.add(linkTo(CarApi.class).withRel("allColors")));
-            Link link = linkTo(CarApi.class).withSelfRel();
-            CollectionModel<Car> carEntityModel = CollectionModel.of(allCarsInColor, link);
-            return ResponseEntity.ok(carEntityModel);
+            allCarsInColor.forEach(car -> car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class)
+                    .slash(car.getId())
+                    .withSelfRel()));
+            allCarsInColor.forEach(car -> car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class)
+                    .withRel("allColors")));
+            Link link = linkTo(CarApi.class).slash("color").slash(color).withSelfRel();
+            CollectionModel<Car> carsCollectionModel = CollectionModel.of(allCarsInColor, link);
+            return ResponseEntity.ok(carsCollectionModel);
         }
         return ResponseEntity.notFound().build();
     }
 
 
     @PostMapping
-    public ResponseEntity addCar(@Validated @RequestBody Car newCar) {
+    public ResponseEntity addCar(@Valid @RequestBody Car newCar) {
         boolean isAdded = carServiceImpl.addNewCar(newCar);
         if (isAdded) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            Link link = linkTo(CarApi.class).slash(newCar.getId()).withSelfRel();
+            return new ResponseEntity<>(newCar.addIf(!newCar.hasLinks(), () -> link), HttpStatus.CREATED);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return new ResponseEntity("{\n\t\"id\": \"not unique.\"\n}", HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Car> modifyCar(@PathVariable long id) {
@@ -95,7 +112,7 @@ public class CarApi {
 
 
     @PutMapping
-    public ResponseEntity<Car> modifyCar(@Validated @RequestBody Car modifiedCar) {
+    public ResponseEntity<Car> modifyCar(@RequestBody Car modifiedCar) {
         boolean isRemoved = carServiceImpl.deleteCar(modifiedCar.getId());
         boolean isAdded = carServiceImpl.addNewCar(modifiedCar);
         if (isRemoved && isAdded) {
