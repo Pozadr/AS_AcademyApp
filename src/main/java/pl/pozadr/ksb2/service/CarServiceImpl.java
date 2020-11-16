@@ -22,7 +22,9 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> getCarList() {
-        return carList;
+        return carList.stream()
+                .sorted(Comparator.comparing(Car::getId))
+                .collect(Collectors.toList());
     }
 
 

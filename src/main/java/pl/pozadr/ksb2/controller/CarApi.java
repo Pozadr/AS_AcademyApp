@@ -1,29 +1,20 @@
 package pl.pozadr.ksb2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import pl.pozadr.ksb2.service.CarServiceImpl;
 import pl.pozadr.ksb2.model.Car;
-import pl.pozadr.ksb2.model.Color;
 
 import javax.validation.Valid;
 import java.util.*;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-@RestController
-@RequestMapping(path = "/cars", produces = {
-        MediaType.APPLICATION_JSON_VALUE, //default
-        MediaType.APPLICATION_XML_VALUE,
-})
+@Controller
 public class CarApi {
     private final CarServiceImpl carServiceImpl;
 
@@ -32,33 +23,34 @@ public class CarApi {
         this.carServiceImpl = carServiceImpl;
     }
 
-    @GetMapping
-    public ResponseEntity<CollectionModel<Car>> getCars() {
+    @GetMapping("/car-main")
+    public String getCars(Model model) {
         if (!carServiceImpl.getCarList().isEmpty()) {
             List<Car> allCars = carServiceImpl.getCarList();
-            allCars.forEach(car -> car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class).slash(car.getId()).withSelfRel()));
-            Link link = linkTo(CarApi.class)
-                    .withSelfRel();
-            CollectionModel<Car> carEntityModel = CollectionModel.of(allCars, link);
-            return ResponseEntity.ok(carEntityModel);
+            model.addAttribute("cars", allCars);
+            model.addAttribute("newCar", new Car());
+            model.addAttribute("modifyCar", new Car());
+            model.addAttribute("delCar", new Car());
+            model.addAttribute("getById", new Car());
+            return "car-main";
         }
-        return ResponseEntity.notFound().build();
+        return "error"; // not found
+
     }
 
+    @GetMapping("/get-car-by-id")
+    public String getCarById(@ModelAttribute Car carById, Model model) {
+        System.out.println(carById.getId());
+        Optional<Car> car = carServiceImpl.getCarByID(carById.getId());
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<Car>> getCarById(@PathVariable long id) {
-        Optional<Car> first = carServiceImpl.getCarByID(id);
-        if (first.isPresent()) {
-            Link link = linkTo(CarApi.class).slash(id).withSelfRel();
-            //EntityModel<Car> carEntityModel = EntityModel.of(first.get(), link);
-            EntityModel<Car> carEntityModel = first.map(car -> new EntityModel(car.addIf(!car.hasLinks(), () -> link))).get();
-            return ResponseEntity.ok(carEntityModel);
+        if (car.isPresent()) {
+            model.addAttribute("car", car.get());
+            return "car-by-id";
         }
-        return ResponseEntity.notFound().build();
+        return "error";
     }
 
-
+    /*
     @GetMapping("/color/{color}")
     public ResponseEntity<CollectionModel<Car>> getCarsByColor(@PathVariable String color) {
         List<Car> allCarsInColor = carServiceImpl.getCarsByColor(Color.valueOf(color));
@@ -74,16 +66,15 @@ public class CarApi {
         }
         return ResponseEntity.notFound().build();
     }
+    */
 
-
-    @PostMapping
-    public ResponseEntity addCar(@Valid @RequestBody Car newCar) {
+    @PostMapping("/add-car")
+    public String addCar(@ModelAttribute Car newCar) {
         boolean isAdded = carServiceImpl.addNewCar(newCar);
         if (isAdded) {
-            Link link = linkTo(CarApi.class).slash(newCar.getId()).withSelfRel();
-            return new ResponseEntity<>(newCar.addIf(!newCar.hasLinks(), () -> link), HttpStatus.CREATED);
+            return "redirect:/car-main";
         }
-        return new ResponseEntity("{\n\t\"id\": \"not unique.\"\n}", HttpStatus.BAD_REQUEST);
+        return "redirect:/car-main";
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -98,30 +89,31 @@ public class CarApi {
         return errors;
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Car> modifyCar(@PathVariable long id) {
-        Optional<Car> carToRemove = carServiceImpl.getCarByID(id);
+
+    @GetMapping("/delete-car")
+    public String deleteCar(@Valid @ModelAttribute Car delCar) {
+        Optional<Car> carToRemove = carServiceImpl.getCarByID(delCar.getId());
         if (carToRemove.isPresent()) {
-            boolean isRemoved = carServiceImpl.deleteCar(id);
+            boolean isRemoved = carServiceImpl.deleteCar(delCar.getId());
             if (isRemoved) {
-                return ResponseEntity.ok(carToRemove.get());
+                return "redirect:/car-main";
             }
         }
-        return ResponseEntity.notFound().build();
+        return "error";
     }
 
 
-    @PutMapping
-    public ResponseEntity<Car> modifyCar(@RequestBody Car modifiedCar) {
+    @GetMapping("/modify-car")
+    public String modifyCar(@Valid @ModelAttribute Car modifiedCar) {
         boolean isRemoved = carServiceImpl.deleteCar(modifiedCar.getId());
         boolean isAdded = carServiceImpl.addNewCar(modifiedCar);
         if (isRemoved && isAdded) {
-            return ResponseEntity.ok(modifiedCar);
+            return "redirect:/car-main";
         }
-        return ResponseEntity.notFound().build();
+        return "/error";
     }
 
-
+    /*
     @PatchMapping("/{id}/{property}/{value}")
     public ResponseEntity<Car> modifyCarProperty(@PathVariable long id, @PathVariable String property,
                                                  @PathVariable String value) {
@@ -132,5 +124,7 @@ public class CarApi {
         return ResponseEntity.notFound().build();
     }
 
+
+     */
 
 }

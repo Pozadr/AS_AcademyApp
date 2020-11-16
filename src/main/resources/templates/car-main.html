@@ -4,60 +4,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/style.css">
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
     <title>Cars</title>
 </head>
 
 <body>
-    <h2>CAR SERVICE</h2>
 
-    <table class="table-show-cars">
-      <tr>
-          <th scope="col"> Id:</th>
-          <th scope="col">Mark:</th>
-          <th scope="col">Model:</th>
-          <th scope="col">Color:</th>
-      </tr>
-      <tr th:each="car: ${cars}">
-          <td th:text="${car.getId()}"></td>
-          <td th:text="${car.getMark()}"></td>
-          <td th:text="${car.getModel()}"></td>
-          <td th:text="${car.getColor()}"></td>
-      </tr>
-    </table>
+<h2>CAR SERVICE</h2>
 
-    <div id="add-car">
-      <h3>Add Car:</h3>
-      <form th:action="@{/add-car}" th:object="${newCar}" th:method="post">
-          <p>Id: <input type="number" th:field="*{id}"></p>
-          <p>Mark: <input type="text" th:field="*{mark}"></p>
-          <p>Model: <input type="text" th:field="*{model}"></p>
-          <p>Color: <input type="text" th:field="*{color}"></p>
-          <p><input type="submit" value="add new car"></p>
-      </form>
+<table>
+    <tr>
+        <th scope="col" class="table-id-col"> Id:</th>
+        <th scope="col" class="table-show-cars">Mark:</th>
+        <th scope="col" class="table-show-cars">Model:</th>
+        <th scope="col" class="table-show-cars">Color:</th>
+    </tr>
+    <tr th:each="car: ${cars}">
+        <td class="table-id-col" th:text="${car.getId()}"></td>
+        <td class="table-show-cars" th:text="${car.getMark()}"></td>
+        <td class="table-show-cars" th:text="${car.getModel()}"></td>
+        <td class="table-show-cars" th:text="${car.getColor()}"></td>
+    </tr>
+</table>
 
-    </div>
+<div id="add-car">
+    <h3>Add Car:</h3>
+    <form th:action="@{/add-car}" th:object="${newCar}" th:method="post">
+        <table>
+            <tr>
+                <td>Id:</td>
+                <td>
+                    <label>
+                        <input type="number" th:field="*{id}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Mark:</td>
+                <td>
+                    <label>
+                        <input type="text" th:field="*{mark}">
+                    </label>
+                </td>
 
-    <div id="mod-car">
-      <h3>Modify Car:</h3>
-      <form th:action="@{/modify-car}" th:object="${modifyCar}" th:method="get">
-          <p>Id: <input type="number" th:field="*{id}"></p>
-          <p>Mark: <input type="text" th:field="*{mark}"></p>
-          <p>Model: <input type="text" th:field="*{model}"></p>
-          <p>Color: <input type="text" th:field="*{color}"></p>
-          <p><input type="submit" value="modify car"></p>
-      </form>
-    </div>
+            </tr>
+            <tr>
+                <td>Model:</td>
+                <td>
+                    <label>
+                        <input type="text" th:field="*{model}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Color:</td>
+                <td>
+                    <label>
+                        <input type="text" th:field="*{color}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="add new car">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
 
-    <div id="del-car">
-      <h3>Delete Car:</h3>
-      <form th:action="@{/delete-car}" th:object="${delCar}" th:method="get">
-          <p>Id: <input type="number" th:field="*{id}"></p>
-          <p><input type="submit" value="delete car"></p>
-      </form>
-    </div>
+<div id="mod-car">
+    <h3>Modify Car:</h3>
+    <form th:action="@{/modify-car}" th:object="${modifyCar}" th:method="get">
+        <table>
+            <tr>
+                <td>Id:</td>
+                <td>
+                    <label>
+                        <input type="number" th:field="*{id}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Mark:</td>
+                <td>
+                    <label>
+                        <input type="text" th:field="*{mark}">
+                    </label>
+                </td>
 
+            </tr>
+            <tr>
+                <td>Model:</td>
+                <td>
+                    <label>
+                        <input type="text" th:field="*{model}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Color:</td>
+                <td>
+                    <label>
+                        <input type="text" th:field="*{color}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="modify car">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
 
+<div id="del-car">
+    <h3>Delete Car:</h3>
+    <form th:action="@{/delete-car}" th:object="${delCar}" th:method="get">
+        <table>
+            <tr>
+                <td>Id:</td>
+                <td>
+                    <label>
+                        <input id="car-id" type="number" th:field="*{id}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="delete car"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="get-car-by-id">
+    <h3>Get car by id:</h3>
+    <form th:action="@{/get-car-by-id}" th:object="${getById}" th:method="get">
+        <table>
+            <tr>
+                <td>Id:</td>
+                <td>
+                    <label>
+                        <input type="number" th:field="*{id}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Get car by ID"></td>
+            </tr>
+        </table>
+    </form>
+</div>
 
 
 </body>

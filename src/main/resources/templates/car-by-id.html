@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
+    <title>Cars</title>
+</head>
+<body>
+<h2>CAR SERVICE</h2>
+
+<h3>Car by ID:</h3>
+
+<table>
+    <tr>
+        <th scope="col" class="table-id-col"> Id:</th>
+        <th scope="col" class="table-show-cars">Mark:</th>
+        <th scope="col" class="table-show-cars">Model:</th>
+        <th scope="col" class="table-show-cars">Color:</th>
+    </tr>
+    <tr>
+        <td class="table-id-col" th:text="${car.getId()}"></td>
+        <td class="table-show-cars" th:text="${car.getMark()}"></td>
+        <td class="table-show-cars" th:text="${car.getModel()}"></td>
+        <td class="table-show-cars" th:text="${car.getColor()}"></td>
+    </tr>
+</table>
+
+</body>
+</html>
