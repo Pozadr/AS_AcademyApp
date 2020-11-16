@@ -1,0 +1,16 @@
+.table-show-cars th, .table-show-cars td {
+    border: 1px black solid;
+    width: 120px;
+}
+
+#add-car {
+    float: left;
+}
+
+#del-car {
+    float: left;
+}
+
+#mod-car {
+    float: left;
+}
