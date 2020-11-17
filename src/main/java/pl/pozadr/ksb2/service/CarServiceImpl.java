@@ -37,6 +37,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> getCarsByColor(Color color) {
         return carList.stream()
+                .sorted(Comparator.comparing(Car::getId))
                 .filter(video -> video.getColor().equals(color))
                 .collect(Collectors.toList());
     }

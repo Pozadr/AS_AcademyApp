@@ -1,14 +1,17 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
     <title>Fault</title>
-</head>
 <body>
+
 <h2>Fault</h2>
-<a href="car-main.html">
-    Go to home page!
-</a>
+<form th:action="@{/go-to-home-page}"  th:method="get">
+    <input type="submit" value="Go to home page">
+</form>
 
 </body>
 </html>

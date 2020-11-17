@@ -18,7 +18,7 @@
         <th scope="col" class="table-show-cars">Model:</th>
         <th scope="col" class="table-show-cars">Color:</th>
     </tr>
-    <tr>
+    <tr th:each="car: ${cars}">
         <td class="table-id-col" th:text="${car.getId()}"></td>
         <td class="table-show-cars" th:text="${car.getMark()}"></td>
         <td class="table-show-cars" th:text="${car.getModel()}"></td>

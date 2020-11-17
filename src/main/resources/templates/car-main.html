@@ -27,7 +27,7 @@
     </tr>
 </table>
 
-<div id="add-car">
+<div class="another-div">
     <h3>Add Car:</h3>
     <form th:action="@{/add-car}" th:object="${newCar}" th:method="post">
         <table>
@@ -66,14 +66,42 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="submit" value="add new car">
+                    <input type="submit" value="Add new car">
                 </td>
             </tr>
         </table>
     </form>
 </div>
 
-<div id="mod-car">
+<div class="another-div">
+    <h3>Delete Car:</h3>
+    <form th:action="@{/delete-car}" th:object="${delCar}" th:method="get">
+        <table>
+            <tr>
+                <td>Id:</td>
+                <td>
+                    <label>
+                        <input id="car-id" type="number" th:field="*{id}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Delete car"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div class="another-div">
     <h3>Modify Car:</h3>
     <form th:action="@{/modify-car}" th:object="${modifyCar}" th:method="get">
         <table>
@@ -119,35 +147,7 @@
     </form>
 </div>
 
-<div id="del-car">
-    <h3>Delete Car:</h3>
-    <form th:action="@{/delete-car}" th:object="${delCar}" th:method="get">
-        <table>
-            <tr>
-                <td>Id:</td>
-                <td>
-                    <label>
-                        <input id="car-id" type="number" th:field="*{id}">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" height="20px"></td>
-            </tr>
-            <tr>
-                <td colspan="2" height="20px"></td>
-            </tr>
-            <tr>
-                <td colspan="2" height="20px"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="delete car"></td>
-            </tr>
-        </table>
-    </form>
-</div>
-
-<div id="get-car-by-id">
+<div class="first-div">
     <h3>Get car by id:</h3>
     <form th:action="@{/get-car-by-id}" th:object="${getById}" th:method="get">
         <table>
@@ -175,6 +175,75 @@
     </form>
 </div>
 
+<div class="another-div">
+    <h3>Get car by color:</h3>
+    <form th:action="@{/get-car-by-color}" th:object="${getByColor}" th:method="get">
+        <table>
+            <tr>
+                <td>Color:</td>
+                <td>
+                    <label>
+                        <input type="text" th:field="*{color}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Get car by color"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div class="another-div">
+    <h3>Modify field:</h3>
+    <form th:action="@{/modify-field}" th:object="${modifyField}" th:method="get">
+        <table>
+            <tr>
+                <td>Id:</td>
+                <td>
+                    <label>
+                        <input type="number" th:field="*{id}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Field:</td>
+                <td>
+                    <label>
+                        <select name="fields" th:field="*{property}">
+                            <option value="mark">Mark</option>
+                            <option value="model">Model</option>
+                            <option value="color">Color</option>
+                        </select>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Value:</td>
+                <td>
+                    <label>
+                        <input type="text" th:field="*{value}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="20px"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Modify field"></td>
+            </tr>
+        </table>
+    </form>
+</div>
 
 </body>
 

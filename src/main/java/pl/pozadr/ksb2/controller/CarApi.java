@@ -32,6 +32,8 @@ public class CarApi {
             model.addAttribute("modifyCar", new Car());
             model.addAttribute("delCar", new Car());
             model.addAttribute("getById", new Car());
+            model.addAttribute("getByColor", new Car());
+            model.addAttribute("modifyField", new ModifyField());
             return "car-main";
         }
         return "error"; // not found
@@ -50,23 +52,17 @@ public class CarApi {
         return "error";
     }
 
-    /*
-    @GetMapping("/color/{color}")
-    public ResponseEntity<CollectionModel<Car>> getCarsByColor(@PathVariable String color) {
-        List<Car> allCarsInColor = carServiceImpl.getCarsByColor(Color.valueOf(color));
+
+    @GetMapping("/get-car-by-color")
+    public String getCarsByColor(@ModelAttribute Car carByColor, Model model) {
+        List<Car> allCarsInColor = carServiceImpl.getCarsByColor(carByColor.getColor());
         if (!allCarsInColor.isEmpty()) {
-            allCarsInColor.forEach(car -> car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class)
-                    .slash(car.getId())
-                    .withSelfRel()));
-            allCarsInColor.forEach(car -> car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class)
-                    .withRel("allColors")));
-            Link link = linkTo(CarApi.class).slash("color").slash(color).withSelfRel();
-            CollectionModel<Car> carsCollectionModel = CollectionModel.of(allCarsInColor, link);
-            return ResponseEntity.ok(carsCollectionModel);
+            model.addAttribute("cars", allCarsInColor);
+            return "car-by-color";
         }
-        return ResponseEntity.notFound().build();
+        return "error";
     }
-    */
+
 
     @PostMapping("/add-car")
     public String addCar(@ModelAttribute Car newCar) {
@@ -113,18 +109,24 @@ public class CarApi {
         return "/error";
     }
 
-    /*
-    @PatchMapping("/{id}/{property}/{value}")
-    public ResponseEntity<Car> modifyCarProperty(@PathVariable long id, @PathVariable String property,
-                                                 @PathVariable String value) {
-        boolean isModified = carServiceImpl.modifyCarProperty(id, property, value);
+
+    @GetMapping("/modify-field")
+    public String modifyCarProperty(@ModelAttribute ModifyField modifyField) {
+        System.out.println(modifyField.getId());
+        System.out.println(modifyField.getProperty());
+        System.out.println(modifyField.getValue());
+
+        boolean isModified = carServiceImpl.modifyCarProperty(modifyField.getId(), modifyField.getProperty(),
+                                                                modifyField.getValue());
         if (isModified) {
-            return ResponseEntity.ok(carServiceImpl.getCarByID(id).get());
+            return "redirect:/car-main";
         }
-        return ResponseEntity.notFound().build();
+        return "/error";
     }
 
-
-     */
+    @GetMapping("/go-to-home-page")
+    public String goToHomePage() {
+        return "redirect:/car-main";
+    }
 
 }

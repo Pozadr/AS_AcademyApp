@@ -8,27 +8,15 @@
     width: 40px;
 }
 
-#add-car {
-    float: left;
-    margin-right: 20px;
-    margin-bottom: 30px;
-}
-
-#del-car {
-    float: left;
-    margin-right: 20px;
-    margin-bottom: 30px;
-
-}
-
-#mod-car {
-    float: left;
-    margin-right: 20px;
-    margin-bottom: 30px;
-
-}
-
-#get-car-by-id {
+.first-div {
     clear: both;
-    margin-right: 10px;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 30px;
+}
+
+.another-div {
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 30px;
 }
