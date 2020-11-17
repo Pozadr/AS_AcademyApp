@@ -4,21 +4,9 @@ package pl.pozadr.ksb2.model;
 import javax.validation.constraints.*;
 
 public class Car {
-    //@NotNull(message = "ID cannot be null.")
-   // @Min(value = 1, message = "ID must be greater than 1.")
     private long id;
-
-   // @NotNull(message = "Mark cannot be null.")
-   // @NotBlank(message = "Mark cannot be blank.")
-   // @Size(min = 1, message = "Mark must have at least 1 character length.")
     private String mark;
-
-  //  @NotNull(message = "Model cannot be null.")
-  //  @NotBlank(message = "Model cannot be blank.")
-  //  @Size(min = 1, message = "Model must have at least 1 character length.")
     private String model;
-
-  //  @NotNull(message = "Color cannot be null.")
     private Color color;
 
     public Car() {

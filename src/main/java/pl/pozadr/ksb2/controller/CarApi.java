@@ -7,10 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import pl.pozadr.ksb2.model.Color;
 import pl.pozadr.ksb2.service.CarServiceImpl;
 import pl.pozadr.ksb2.model.Car;
 
-import javax.validation.Valid;
 import java.util.*;
 
 
@@ -30,20 +30,20 @@ public class CarApi {
             model.addAttribute("cars", allCars);
             model.addAttribute("newCar", new Car());
             model.addAttribute("modifyCar", new Car());
-            model.addAttribute("delCar", new Car());
-            model.addAttribute("getById", new Car());
-            model.addAttribute("getByColor", new Car());
+            model.addAttribute("delCar", new SingleParam());
+            model.addAttribute("getById", new SingleParam());
+            model.addAttribute("getByColor", new SingleParam());
             model.addAttribute("modifyField", new ModifyField());
             return "car-main";
         }
         return "error"; // not found
-
     }
 
     @GetMapping("/get-car-by-id")
-    public String getCarById(@ModelAttribute Car carById, Model model) {
-        System.out.println(carById.getId());
-        Optional<Car> car = carServiceImpl.getCarByID(carById.getId());
+    public String getCarById(@ModelAttribute SingleParam input, Model model) {
+        long inputCarId = Integer.parseInt(input.getInput());
+        System.out.println(inputCarId);
+        Optional<Car> car = carServiceImpl.getCarByID(inputCarId);
 
         if (car.isPresent()) {
             model.addAttribute("car", car.get());
@@ -54,13 +54,19 @@ public class CarApi {
 
 
     @GetMapping("/get-car-by-color")
-    public String getCarsByColor(@ModelAttribute Car carByColor, Model model) {
-        List<Car> allCarsInColor = carServiceImpl.getCarsByColor(carByColor.getColor());
-        if (!allCarsInColor.isEmpty()) {
-            model.addAttribute("cars", allCarsInColor);
-            return "car-by-color";
+    public String getCarsByColor(@ModelAttribute SingleParam input, Model model) {
+        try {
+            Color inputCarColor = Color.valueOf(input.getInput());
+            List<Car> allCarsInColor = carServiceImpl.getCarsByColor(inputCarColor);
+            if (!allCarsInColor.isEmpty()) {
+                model.addAttribute("cars", allCarsInColor);
+                return "car-by-color";
+            }
+            return "error";
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
+            return "error";
         }
-        return "error";
     }
 
 
@@ -87,10 +93,11 @@ public class CarApi {
 
 
     @GetMapping("/delete-car")
-    public String deleteCar(@Valid @ModelAttribute Car delCar) {
-        Optional<Car> carToRemove = carServiceImpl.getCarByID(delCar.getId());
+    public String deleteCar(@ModelAttribute SingleParam input) {
+        long inputCarId = Integer.parseInt(input.getInput());
+        Optional<Car> carToRemove = carServiceImpl.getCarByID(inputCarId);
         if (carToRemove.isPresent()) {
-            boolean isRemoved = carServiceImpl.deleteCar(delCar.getId());
+            boolean isRemoved = carServiceImpl.deleteCar(inputCarId);
             if (isRemoved) {
                 return "redirect:/car-main";
             }
@@ -100,7 +107,7 @@ public class CarApi {
 
 
     @GetMapping("/modify-car")
-    public String modifyCar(@Valid @ModelAttribute Car modifiedCar) {
+    public String modifyCar(@ModelAttribute Car modifiedCar) {
         boolean isRemoved = carServiceImpl.deleteCar(modifiedCar.getId());
         boolean isAdded = carServiceImpl.addNewCar(modifiedCar);
         if (isRemoved && isAdded) {
@@ -112,12 +119,8 @@ public class CarApi {
 
     @GetMapping("/modify-field")
     public String modifyCarProperty(@ModelAttribute ModifyField modifyField) {
-        System.out.println(modifyField.getId());
-        System.out.println(modifyField.getProperty());
-        System.out.println(modifyField.getValue());
-
         boolean isModified = carServiceImpl.modifyCarProperty(modifyField.getId(), modifyField.getProperty(),
-                                                                modifyField.getValue());
+                modifyField.getValue());
         if (isModified) {
             return "redirect:/car-main";
         }
