@@ -82,8 +82,14 @@ public class CarServiceImpl implements CarService {
                 return true;
             }
             case "color": {
-                first.get().setColor(Color.valueOf(value));
-                return true;
+                try {
+                    Color valueColor = Color.valueOf(value);
+                    first.get().setColor(valueColor);
+                    return true;
+                } catch (IllegalArgumentException ex) {
+                    System.out.println(ex.getMessage());
+                    return false;
+                }
             }
             default: {
                 return false;
