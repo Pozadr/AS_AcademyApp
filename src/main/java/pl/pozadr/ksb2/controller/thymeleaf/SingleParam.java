@@ -1,4 +1,4 @@
-package pl.pozadr.ksb2.controller;
+package pl.pozadr.ksb2.controller.thymeleaf;
 
 public class SingleParam {
     private String input;

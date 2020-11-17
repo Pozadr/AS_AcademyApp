@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import pl.pozadr.ksb2.controller.thymeleaf.ModifyField;
+import pl.pozadr.ksb2.controller.thymeleaf.SingleParam;
 import pl.pozadr.ksb2.model.Color;
 import pl.pozadr.ksb2.service.CarServiceImpl;
 import pl.pozadr.ksb2.model.Car;
