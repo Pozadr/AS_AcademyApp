@@ -1,6 +1,6 @@
 ## Homework
 ### PL
-#### Zadanie podstawowe:
+#### Zadanie tydzień 3:
 Napisz REST API dla listy pojazdów. Pojazd będzie miał pola: id, mark, model, color.
 API które będzie obsługiwało metody webowe:
 
@@ -14,8 +14,19 @@ API które będzie obsługiwało metody webowe:
 
 Przy starcie aplikacji mają dodawać się 3 pozycje.
 
-#### Dla ambitnych:
+**Dla ambitnych:**
 
 * rozbuduj aplikacje o możliwość zwracania danych w postaci XML
 * dodaj obsługę Swgger UI
 * zaimplementuj HATEOAS
+
+#### Zadanie tydzień 4:
+
+Rozbuduj swoją aplikację z poprzedniego tygodnia o interfejs graficzny, który umożliwi:
+
+* wyświetlanie wszystkich pozycji
+* pobieranie elementu po jego id
+* dodawanie pozycji
+* modyfikowanie pozycji
+* modyfikowanie jednego z pól pozycji
+* usuwania jednej pozycji
