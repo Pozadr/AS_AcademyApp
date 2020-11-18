@@ -21,11 +21,8 @@ public class Car {
     @NotNull(message = "Color cannot be null.")
     private Color color;
 
+
     public Car() {
-        this.id = Long.MAX_VALUE;
-        this.mark = "mark_init";
-        this.model = "init_model";
-        this.color = Color.UNKNOWN;
     }
 
 

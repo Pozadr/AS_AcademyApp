@@ -35,7 +35,7 @@
                 <td>Id:</td>
                 <td>
                     <label>
-                        <input type="number" th:field="*{id}">
+                        <input name="add-car-id" type="number" th:field="*{id}">
                     </label>
                 </td>
             </tr>
@@ -43,7 +43,7 @@
                 <td>Mark:</td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{mark}">
+                        <input name="add-car-mark" type="text" th:field="*{mark}">
                     </label>
                 </td>
 
@@ -52,7 +52,7 @@
                 <td>Model:</td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{model}">
+                        <input name="add-car-model" type="text" th:field="*{model}">
                     </label>
                 </td>
             </tr>
@@ -60,13 +60,13 @@
                 <td>Color:</td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{color}">
+                        <input name="add-car-color" type="text" th:field="*{color}">
                     </label>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="submit" value="Add new car">
+                    <input name="add-car-submit" type="submit" value="Add new car">
                 </td>
             </tr>
         </table>
@@ -81,7 +81,7 @@
                 <td>Id:</td>
                 <td>
                     <label>
-                        <input id="car-id" type="number" th:field="*{input}">
+                        <input name="delete-car-id" id="car-id" type="number" th:field="*{input}">
                     </label>
                 </td>
             </tr>
@@ -95,7 +95,7 @@
                 <td colspan="2" height="20px"></td>
             </tr>
             <tr>
-                <td colspan="2"><input type="submit" value="Delete car"></td>
+                <td colspan="2"><input name="delete-car-submit" type="submit" value="Delete car"></td>
             </tr>
         </table>
     </form>
@@ -109,7 +109,7 @@
                 <td>Id:</td>
                 <td>
                     <label>
-                        <input type="number" th:field="*{id}">
+                        <input name="modify-car-id" type="number" th:field="*{id}">
                     </label>
                 </td>
             </tr>
@@ -117,7 +117,7 @@
                 <td>Mark:</td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{mark}">
+                        <input name="modify-car-mark" type="text" th:field="*{mark}">
                     </label>
                 </td>
 
@@ -126,7 +126,7 @@
                 <td>Model:</td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{model}">
+                        <input name="modify-car-model" type="text" th:field="*{model}">
                     </label>
                 </td>
             </tr>
@@ -134,13 +134,13 @@
                 <td>Color:</td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{color}">
+                        <input name="modify-car-color" type="text" th:field="*{color}">
                     </label>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="submit" value="modify car">
+                    <input name="modify-car-submit" type="submit" value="modify car">
                 </td>
             </tr>
         </table>
@@ -155,7 +155,7 @@
                 <td>Id:</td>
                 <td>
                     <label>
-                        <input type="number" th:field="*{input}">
+                        <input name="get-car-by-id-input" type="number" th:field="*{input}">
                     </label>
                 </td>
             </tr>
@@ -169,7 +169,7 @@
                 <td colspan="2" height="20px"></td>
             </tr>
             <tr>
-                <td colspan="2"><input type="submit" value="Get car by ID"></td>
+                <td colspan="2"><input name="get-car-by-id-submit" type="submit" value="Get car by ID"></td>
             </tr>
         </table>
     </form>
@@ -183,7 +183,7 @@
                 <td>Color:</td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{input}">
+                        <input name="get-car-by-color-input" type="text" th:field="*{input}">
                     </label>
                 </td>
             </tr>
@@ -197,7 +197,7 @@
                 <td colspan="2" height="20px"></td>
             </tr>
             <tr>
-                <td colspan="2"><input type="submit" value="Get car by color"></td>
+                <td colspan="2"><input name="get-car-by-color-submit" type="submit" value="Get car by color"></td>
             </tr>
         </table>
     </form>
@@ -211,7 +211,7 @@
                 <td>Id:</td>
                 <td>
                     <label>
-                        <input type="number" th:field="*{id}">
+                        <input name="modify-field-id" type="number" th:field="*{id}">
                     </label>
                 </td>
             </tr>
@@ -219,7 +219,7 @@
                 <td>Field:</td>
                 <td>
                     <label>
-                        <select name="fields" th:field="*{property}">
+                        <select name="modify-field-property" th:field="*{property}">
                             <option value="mark">Mark</option>
                             <option value="model">Model</option>
                             <option value="color">Color</option>
@@ -231,7 +231,7 @@
                 <td>Value:</td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{value}">
+                        <input name="modify-field-value" type="text" th:field="*{value}">
                     </label>
                 </td>
             </tr>
@@ -239,7 +239,7 @@
                 <td colspan="2" height="20px"></td>
             </tr>
             <tr>
-                <td colspan="2"><input type="submit" value="Modify field"></td>
+                <td colspan="2"><input name="modify-field-submit" type="submit" value="Modify field"></td>
             </tr>
         </table>
     </form>
