@@ -38,7 +38,7 @@ public class CarApi {
             model.addAttribute("modifyField", new ModifyField());
             return "car-main";
         }
-        return "error"; // not found
+        return "error-not-found";
     }
 
     @GetMapping("/get-car-by-id")
@@ -51,7 +51,7 @@ public class CarApi {
             model.addAttribute("car", car.get());
             return "car-by-id";
         }
-        return "error";
+        return "error-not-found";
     }
 
 
@@ -64,10 +64,10 @@ public class CarApi {
                 model.addAttribute("cars", allCarsInColor);
                 return "car-by-color";
             }
-            return "error";
+            return "error-not-found";
         } catch (IllegalArgumentException ex) {
             System.out.println(ex.getMessage());
-            return "error";
+            return "error-input";
         }
     }
 
@@ -78,19 +78,7 @@ public class CarApi {
         if (isAdded) {
             return "redirect:/car-main";
         }
-        return "redirect:/car-main";
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
+        return "error-input";
     }
 
 
@@ -104,7 +92,7 @@ public class CarApi {
                 return "redirect:/car-main";
             }
         }
-        return "error";
+        return "error-input";
     }
 
 
@@ -115,7 +103,7 @@ public class CarApi {
         if (isRemoved && isAdded) {
             return "redirect:/car-main";
         }
-        return "/error";
+        return "error-input";
     }
 
 
@@ -126,8 +114,9 @@ public class CarApi {
         if (isModified) {
             return "redirect:/car-main";
         }
-        return "/error";
+        return "error-input";
     }
+
 
     @GetMapping("/go-to-home-page")
     public String goToHomePage() {

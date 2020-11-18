@@ -44,6 +44,12 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public boolean addNewCar(Car newCar) {
+        /*if (newCar.getId() == 0 || newCar.getMark() == null || newCar.getModel() == null
+                || newCar.getColor() == null) {
+            return false;
+        }
+         */
+        
         Optional<Car> idOnList = carList.stream()
                 .filter(car -> car.getId() == newCar.getId())
                 .findFirst();
