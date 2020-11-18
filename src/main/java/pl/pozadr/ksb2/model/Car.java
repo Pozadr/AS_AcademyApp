@@ -1,9 +1,11 @@
 package pl.pozadr.ksb2.model;
 
+import org.springframework.hateoas.RepresentationModel;
+
 
 import javax.validation.constraints.*;
 
-public class Car {
+public class Car extends RepresentationModel<Car>  {
     @NotNull(message = "ID cannot be null.")
     @Min(value = 1, message = "ID must be greater than 1.")
     private long id;
