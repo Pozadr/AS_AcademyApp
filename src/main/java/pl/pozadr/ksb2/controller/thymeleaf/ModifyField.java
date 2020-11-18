@@ -1,8 +1,18 @@
 package pl.pozadr.ksb2.controller.thymeleaf;
 
+import javax.validation.constraints.*;
+
 public class ModifyField {
+    @NotNull(message = "ID cannot be null.")
+    @Min(value = 1, message = "ID must be greater than 1.")
     private long id;
+
+    @NotNull(message = "Property cannot be null.")
+    @NotBlank(message = "Property cannot be blank.")
     private String property;
+
+    @NotNull(message = "Value cannot be null.")
+    @NotBlank(message = "Value cannot be blank.")
     private String value;
 
     public ModifyField() {

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import pl.pozadr.ksb2.controller.thymeleaf.ModifyField;
@@ -25,6 +26,7 @@ public class CarApi {
         this.carServiceImpl = carServiceImpl;
     }
 
+
     @GetMapping("/car-main")
     public String getCars(Model model) {
         if (!carServiceImpl.getCarList().isEmpty()) {
@@ -41,10 +43,10 @@ public class CarApi {
         return "error-not-found";
     }
 
+
     @GetMapping("/get-car-by-id")
-    public String getCarById(@ModelAttribute SingleParam input, Model model) {
+    public String getCarById(@Validated @ModelAttribute SingleParam input, Model model) {
         long inputCarId = Integer.parseInt(input.getInput());
-        System.out.println(inputCarId);
         Optional<Car> car = carServiceImpl.getCarByID(inputCarId);
 
         if (car.isPresent()) {
@@ -56,7 +58,7 @@ public class CarApi {
 
 
     @GetMapping("/get-car-by-color")
-    public String getCarsByColor(@ModelAttribute SingleParam input, Model model) {
+    public String getCarsByColor(@Validated @ModelAttribute SingleParam input, Model model) {
         try {
             Color inputCarColor = Color.valueOf(input.getInput());
             List<Car> allCarsInColor = carServiceImpl.getCarsByColor(inputCarColor);
@@ -73,7 +75,7 @@ public class CarApi {
 
 
     @PostMapping("/add-car")
-    public String addCar(@ModelAttribute Car newCar) {
+    public String addCar(@Validated @ModelAttribute Car newCar) {
         boolean isAdded = carServiceImpl.addNewCar(newCar);
         if (isAdded) {
             return "redirect:/car-main";
@@ -83,7 +85,7 @@ public class CarApi {
 
 
     @GetMapping("/delete-car")
-    public String deleteCar(@ModelAttribute SingleParam input) {
+    public String deleteCar(@Validated @ModelAttribute SingleParam input) {
         long inputCarId = Integer.parseInt(input.getInput());
         Optional<Car> carToRemove = carServiceImpl.getCarByID(inputCarId);
         if (carToRemove.isPresent()) {
@@ -97,7 +99,7 @@ public class CarApi {
 
 
     @GetMapping("/modify-car")
-    public String modifyCar(@ModelAttribute Car modifiedCar) {
+    public String modifyCar(@Validated @ModelAttribute Car modifiedCar) {
         boolean isRemoved = carServiceImpl.deleteCar(modifiedCar.getId());
         boolean isAdded = carServiceImpl.addNewCar(modifiedCar);
         if (isRemoved && isAdded) {
@@ -108,7 +110,7 @@ public class CarApi {
 
 
     @GetMapping("/modify-field")
-    public String modifyCarProperty(@ModelAttribute ModifyField modifyField) {
+    public String modifyCarProperty(@Validated @ModelAttribute ModifyField modifyField) {
         boolean isModified = carServiceImpl.modifyCarProperty(modifyField.getId(), modifyField.getProperty(),
                 modifyField.getValue());
         if (isModified) {
