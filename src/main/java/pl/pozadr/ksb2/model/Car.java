@@ -1,7 +1,6 @@
 package pl.pozadr.ksb2.model;
 
 import org.springframework.hateoas.RepresentationModel;
-import pl.pozadr.ksb2.controller.CarApi;
 
 import javax.validation.constraints.*;
 
