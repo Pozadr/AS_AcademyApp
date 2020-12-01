@@ -1,32 +1,21 @@
-## Homework
-### PL
-#### Zadanie tydzień 3:
-Napisz REST API dla listy pojazdów. Pojazd będzie miał pola: id, mark, model, color.
-API które będzie obsługiwało metody webowe:
+# Car API
+*Spring boot 2 academy*
 
-* do pobierania wszystkich pozycji
-* do pobierania elementu po jego id
-* do pobierania elementów w określonym kolorze (query)
-* do dodawania pozycji
-* do modyfikowania pozycji
-* do modyfikowania jednego z pól pozycji
-* do usuwania jeden pozycji
+## General
+REST API with car service as an example.
 
-Przy starcie aplikacji mają dodawać się 3 pozycje.
+## Technologies
 
-**Dla ambitnych:**
+- Java 11
+- Maven
+- Spring Boot 2.4.0
+- Thymeleaf - UI
+- Swagger UI
+- Hateoas
 
-* rozbuduj aplikacje o możliwość zwracania danych w postaci XML
-* dodaj obsługę Swgger UI
-* zaimplementuj HATEOAS
 
-#### Zadanie tydzień 4:
+## Screenshots
 
-Rozbuduj swoją aplikację z poprzedniego tygodnia o interfejs graficzny, który umożliwi:
+![home](./prtScr/1.png "Home")
 
-* wyświetlanie wszystkich pozycji
-* pobieranie elementu po jego id
-* dodawanie pozycji
-* modyfikowanie pozycji
-* modyfikowanie jednego z pól pozycji
-* usuwania jednej pozycji
+
