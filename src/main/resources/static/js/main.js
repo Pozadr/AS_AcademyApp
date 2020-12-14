@@ -10,6 +10,12 @@ $(document).ready(function () {
             $('#modelUpdate').val(car.model);
             $('#colorUpdate').val(car.color);
         });
+
+        $('#idEditMessage').hide();
+        $('#markEditMessage').hide();
+        $('#modelEditMessage').hide();
+        $('#colorEditMessage').hide();
+
         $('#editModal').modal();
     });
 

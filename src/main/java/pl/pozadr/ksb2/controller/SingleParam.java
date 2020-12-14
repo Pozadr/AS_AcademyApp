@@ -1,4 +1,4 @@
-package pl.pozadr.ksb2.controller.thymeleaf;
+package pl.pozadr.ksb2.controller;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

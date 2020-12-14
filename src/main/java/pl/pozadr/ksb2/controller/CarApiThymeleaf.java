@@ -1,4 +1,4 @@
-package pl.pozadr.ksb2.controller.thymeleaf;
+package pl.pozadr.ksb2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,9 +28,6 @@ public class CarApiThymeleaf {
             List<Car> allCars = carServiceImpl.getCarList();
             model.addAttribute("cars", allCars);
             model.addAttribute("newCar", new Car());
-            model.addAttribute("modifyCar", new Car());
-            model.addAttribute("delCar", new SingleParam());
-            model.addAttribute("getById", new SingleParam());
             model.addAttribute("getByColor", new SingleParam());
             model.addAttribute("modifyField", new ModifyField());
             return "car-main";
@@ -47,10 +44,9 @@ public class CarApiThymeleaf {
 
 
     @GetMapping("/get-car-by-color")
-    public String getCarsByColor(@Validated @ModelAttribute SingleParam input, Model model) {
+    public String getCarsByColor(@Validated Color color, Model model) {
         try {
-            Color inputCarColor = Color.valueOf(input.getInput());
-            List<Car> allCarsInColor = carServiceImpl.getCarsByColor(inputCarColor);
+            List<Car> allCarsInColor = carServiceImpl.getCarsByColor(color);
             if (!allCarsInColor.isEmpty()) {
                 model.addAttribute("cars", allCarsInColor);
                 return "car-by-color";
@@ -64,8 +60,11 @@ public class CarApiThymeleaf {
 
 
     @PostMapping("/add-car")
-    public String addCar(@Validated Car newCar) {
-        boolean isAdded = carServiceImpl.addNewCar(newCar);
+    public String addCar(String mark, String model, String color) {
+        boolean isAdded = carServiceImpl.addNewCar(mark, model, color);
+        System.out.println("mark: " + mark);
+        System.out.println("model: " + model);
+        System.out.println("color: " + color);
         if (isAdded) {
             return "redirect:/car-main";
         }

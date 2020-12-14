@@ -43,15 +43,17 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public boolean addNewCar(Car newCar) {
-        Optional<Car> idOnList = carList.stream()
-                .filter(car -> car.getId() == newCar.getId())
-                .findFirst();
-        if (idOnList.isPresent()) {
-            return false;
-        } else {
-            return carList.add(newCar);
-        }
+    public boolean addNewCar(String mark, String model, String color) {
+        long maxId = carList.stream()
+                .max(Comparator.comparing(Car::getId))
+                .get()
+                .getId();
+        Car newCar = new Car();
+        newCar.setId(maxId + 1);
+        newCar.setMark(mark);
+        newCar.setModel(model);
+        newCar.setColor(Color.valueOf(color));
+        return carList.add(newCar);
     }
 
     @Override

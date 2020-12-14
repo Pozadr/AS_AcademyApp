@@ -36,21 +36,20 @@
     </table>
 </div>
 <div class="container">
-
-    <form class="form-inline">
+    <form th:action="@{/add-car}" class="form-inline" th:method="post">
         <div class="form-group mx-sm-3 mb-2">
             <label for="markAddCar" class="sr-only">Password</label>
-            <input type="password" class="form-control" id="markAddCar" placeholder="Mark">
+            <input type="text" class="form-control" id="markAddCar" placeholder="Mark" name="mark">
         </div>
         <div class="form-group mx-sm-3 mb-2">
             <label for="modelAddCar" class="sr-only">Password</label>
-            <input type="password" class="form-control" id="modelAddCar" placeholder="Model">
+            <input type="text" class="form-control" id="modelAddCar" placeholder="Model" name="model">
         </div>
         <div class="form-group mx-sm-3 mb-2">
             <label for="colorAddCar" class="sr-only">Password</label>
-            <input type="password" class="form-control" id="colorAddCar" placeholder="Color">
+            <input type="text" class="form-control" id="colorAddCar" placeholder="Color" name="color">
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Add car</button>
+        <button type="submit" class="btn btn-primary mb-2">Add new car</button>
     </form>
     <p></p>
 </div>
@@ -140,7 +139,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="idUpdate" class="col-form-label">Id:</label>
-                        <input type="text" class="form-control" id="idUpdate" name="id">
+                        <input type="text" class="form-control" id="idUpdate" name="id" readonly>
                         <p id="idEditMessage" style="color: red;">
                             **Id is missing
                         </p>

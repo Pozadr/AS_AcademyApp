@@ -1,6 +1,5 @@
 package pl.pozadr.ksb2.service;
 
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import pl.pozadr.ksb2.model.Car;
 import pl.pozadr.ksb2.model.Color;
 
@@ -15,7 +14,7 @@ public interface CarService {
 
     List<Car> getCarsByColor(Color color);
 
-    boolean addNewCar(Car newCar) throws MethodArgumentNotValidException;
+    boolean addNewCar(String mark, String model, String color);
 
     boolean modifyCar(Car modCar);
 

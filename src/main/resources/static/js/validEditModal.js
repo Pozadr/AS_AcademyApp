@@ -1,13 +1,7 @@
-// Validate Edit Sail
+// Validate Edit Car
 let editIdError;
 let editMarkError;
 let editModelError;
-let editColorError;
-
-$('#idEditMessage').hide();
-$('#markEditMessage').hide();
-$('#modelEditMessage').hide();
-$('#colorEditMessage').hide();
 
 function validateEditSail() {
     // id
@@ -41,7 +35,7 @@ function validateEditSail() {
 
 }
 
-// Submit add Sail
+// Submit add Car
 $('#submitEdit').click(function () {
     return validateEditSail();
 });
