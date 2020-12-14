@@ -55,6 +55,21 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public boolean modifyCar(Car modCar) {
+        Optional<Car> carToEditOpt = getCarByID(modCar.getId());
+        if (carToEditOpt.isPresent()) {
+            Car carToEdit = carToEditOpt.get();
+            carToEdit.setMark(modCar.getMark());
+            carToEdit.setModel(modCar.getModel());
+            carToEdit.setColor(modCar.getColor());
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
     public boolean deleteCar(long id) {
         Optional<Car> first = carList.stream()
                 .filter(car -> car.getId() == id)

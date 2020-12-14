@@ -40,15 +40,9 @@ public class CarApiThymeleaf {
 
 
     @GetMapping("/get-car-by-id")
-    public String getCarById(@Validated @ModelAttribute SingleParam input, Model model) {
-        long inputCarId = Integer.parseInt(input.getInput());
-        Optional<Car> car = carServiceImpl.getCarByID(inputCarId);
-
-        if (car.isPresent()) {
-            model.addAttribute("car", car.get());
-            return "car-by-id";
-        }
-        return "error-not-found";
+    @ResponseBody
+    public Optional<Car> getCarById(long id, Model model) {
+        return carServiceImpl.getCarByID(id);
     }
 
 
@@ -70,7 +64,7 @@ public class CarApiThymeleaf {
 
 
     @PostMapping("/add-car")
-    public String addCar(@Validated @ModelAttribute Car newCar) {
+    public String addCar(@Validated Car newCar) {
         boolean isAdded = carServiceImpl.addNewCar(newCar);
         if (isAdded) {
             return "redirect:/car-main";
@@ -80,24 +74,20 @@ public class CarApiThymeleaf {
 
 
     @GetMapping("/delete-car")
-    public String deleteCar(@Validated @ModelAttribute SingleParam input) {
-        long inputCarId = Integer.parseInt(input.getInput());
-        Optional<Car> carToRemove = carServiceImpl.getCarByID(inputCarId);
-        if (carToRemove.isPresent()) {
-            boolean isRemoved = carServiceImpl.deleteCar(inputCarId);
-            if (isRemoved) {
-                return "redirect:/car-main";
-            }
+    public String deleteCar(long id) {
+        boolean isRemoved = carServiceImpl.deleteCar(id);
+        if (isRemoved) {
+            return "redirect:/car-main";
         }
         return "error-input";
     }
 
 
-    @GetMapping("/modify-car")
-    public String modifyCar(@Validated @ModelAttribute Car modifiedCar) {
-        boolean isRemoved = carServiceImpl.deleteCar(modifiedCar.getId());
-        boolean isAdded = carServiceImpl.addNewCar(modifiedCar);
-        if (isRemoved && isAdded) {
+    @RequestMapping(value = "/modify-car", method = {RequestMethod.PUT, RequestMethod.POST, RequestMethod.GET})
+    public String modifyCar(Car modifiedCar) {
+        boolean isModified = carServiceImpl.modifyCar(modifiedCar);
+        if (isModified) {
+            System.out.println("ok before redirect");
             return "redirect:/car-main";
         }
         return "error-input";

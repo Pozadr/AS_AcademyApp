@@ -17,6 +17,8 @@ public interface CarService {
 
     boolean addNewCar(Car newCar) throws MethodArgumentNotValidException;
 
+    boolean modifyCar(Car modCar);
+
     boolean deleteCar(long id);
 
     boolean modifyCarProperty(long id, String property, String value);
