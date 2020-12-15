@@ -1,21 +1,23 @@
 # Car API
-*Spring boot 2 academy*
+[*Spring boot 2 academy*](https://www.akademiaspring.pl/)
 
 ## General
-REST API with car service as an example.
+API with UI in Thymeleaf. Car as a model of application.
 
 ## Technologies
-
 - Java 11
 - Maven
 - Spring Boot 2.4.0
-- Thymeleaf - UI
-- Swagger UI
-- Hateoas
-
+- Swagger
+- Thymeleaf
+- Bootstrap(CSS)
+- JQuery/JavaScript
+- MVC
 
 ## Screenshots
 
-![home](./prtScr/1.png "Home")
+![home](./prtScr/2.png "Home")
+![modify](./prtScr/3.png "Modify Car")
+![validation](./prtScr/4.png "Validation")
 
 
