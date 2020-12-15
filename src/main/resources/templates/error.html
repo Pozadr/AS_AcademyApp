@@ -4,15 +4,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
     <title>Error</title>
 <body>
 
-<h2>ERROR</h2>
-
-<form th:action="@{/go-to-home-page}"  th:method="get">
-    <input type="submit" value="Go to home page">
-</form>
-
+<div class="container">
+    <h2>ERROR</h2>
+</div>
+<div class="container">
+    <form th:action="@{/go-to-home-page}" th:method="get">
+        <input class="btn btn-primary" type="submit" value="Go to home page">
+    </form>
+</div>
 </body>
 </html>

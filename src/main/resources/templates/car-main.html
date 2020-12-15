@@ -15,6 +15,16 @@
 <div class="container">
     <h2>CAR SERVICE</h2>
 </div>
+
+<!-- Add car -->
+<div class="container">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="toggleAddModal">Add
+        new car
+    </button>
+    <p></p>
+</div>
+
+<!-- TABLE: Cars -->
 <div class="container">
     <table class="table table-striped">
         <tr>
@@ -35,96 +45,116 @@
         </tr>
     </table>
 </div>
+
+<!-- Modify field -->
 <div class="container">
-    <form th:action="@{/add-car}" class="form-inline" th:method="post">
-        <div class="form-group mx-sm-3 mb-2">
-            <label for="markAddCar" class="sr-only">Password</label>
-            <input type="text" class="form-control" id="markAddCar" placeholder="Mark" name="mark">
+    <form th:action="@{/modify-field}" th:method="get">
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label for="idEditField">Id:</label>
+                <input type="text" class="form-control" id="idEditField" name="id" placeholder="Id">
+                <div class="validated-feedback" id="idEditFieldMessage" style="color: red;">
+                    **Id is missing
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="propertyModifyField"> Property:</label>
+                <select class="form-control" id="propertyModifyField" name="property">
+                    <option value="mark">Mark</option>
+                    <option value="model">Model</option>
+                    <option value="color">Color</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="valueModifyField">Value:</label>
+                <input type="text" class="form-control" id="valueModifyField" name="value" placeholder="Value">
+                <div class="validated-feedback" id="valueEditFieldMessage" style="color: red;">
+                    **Id is missing
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="modifyField">Modify field</button>
         </div>
-        <div class="form-group mx-sm-3 mb-2">
-            <label for="modelAddCar" class="sr-only">Password</label>
-            <input type="text" class="form-control" id="modelAddCar" placeholder="Model" name="model">
-        </div>
-        <div class="form-group mx-sm-3 mb-2">
-            <label for="colorAddCar" class="sr-only">Password</label>
-            <input type="text" class="form-control" id="colorAddCar" placeholder="Color" name="color">
-        </div>
-        <button type="submit" class="btn btn-primary mb-2">Add new car</button>
     </form>
+</div>
+
+<!-- Get car by color -->
+<div class="container">
     <p></p>
-</div>
-
-<div class="container">
-    <h3>Get car by color:</h3>
-    <form th:action="@{/get-car-by-color}" th:object="${getByColor}" th:method="get">
-        <table>
-            <tr>
-                <td>Color:</td>
-                <td>
-                    <label>
-                        <input name="get-car-by-color-input" type="text" th:field="*{input}">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" height="20px"></td>
-            </tr>
-            <tr>
-                <td colspan="2" height="20px"></td>
-            </tr>
-            <tr>
-                <td colspan="2" height="20px"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input name="get-car-by-color-submit" type="submit" value="Get car by color"></td>
-            </tr>
-        </table>
+    <h5>Get cars by color: </h5>
+    <form th:action="@{/get-car-by-color}" th:method="get">
+        <div class="form-group">
+            <label for="colorGetByColor" class="sr-only"></label>
+            <select class="form-control" style="width: 100px" id="colorGetByColor" name="color">
+                <option value="RED">Red</option>
+                <option value="GREEN">Green</option>
+                <option value="BLUE">Blue</option>
+                <option value="WHITE">White</option>
+                <option value="BLACK">Black</option>
+                <option value="YELLOW">Yellow</option>
+                <option value="ORANGE">Orange</option>
+                <option value="BROWN">Brown</option>
+                <option value="GREY">Grey</option>
+                <option value="UNKNOWN">Unknown</option>
+            </select>
+        </div>
+            <button type="submit" class="btn btn-primary mb-2">Get list</button>
     </form>
 </div>
 
-<div class="container">
-    <h3>Modify field:</h3>
-    <form th:action="@{/modify-field}" th:object="${modifyField}" th:method="get">
-        <table>
-            <tr>
-                <td>Id:</td>
-                <td>
-                    <label>
-                        <input name="modify-field-id" type="number" th:field="*{id}">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>Field:</td>
-                <td>
-                    <label>
-                        <select name="modify-field-property" th:field="*{property}">
-                            <option value="mark">Mark</option>
-                            <option value="model">Model</option>
-                            <option value="color">Color</option>
+<!-- MODAL: Add Car -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <form th:action="@{/add-car}" th:method="post">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalCenterTitle">Add car</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="markAddCar" class="col-form-label">Password</label>
+                        <input type="text" class="form-control" id="markAddCar" placeholder="Mark" name="mark">
+                        <p id="markAddMessage" style="color: red;">
+                            **Mark is missing
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="modelAddCar" class="col-form-label">Password</label>
+                        <input type="text" class="form-control" id="modelAddCar" placeholder="Model"
+                               name="model">
+                        <p id="modelAddMessage" style="color: red;">
+                            **Model is missing
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="colorAdd" class="col-form-label">Color:</label>
+                        <select class="form-control" id="colorAdd" name="color">
+                            <option value="RED">Red</option>
+                            <option value="GREEN">Green</option>
+                            <option value="BLUE">Blue</option>
+                            <option value="WHITE">White</option>
+                            <option value="BLACK">Black</option>
+                            <option value="YELLOW">Yellow</option>
+                            <option value="ORANGE">Orange</option>
+                            <option value="BROWN">Brown</option>
+                            <option value="GREY">Grey</option>
+                            <option value="UNKNOWN">Unknown</option>
                         </select>
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>Value:</td>
-                <td>
-                    <label>
-                        <input name="modify-field-value" type="text" th:field="*{value}">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" height="20px"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input name="modify-field-submit" type="submit" value="Modify field"></td>
-            </tr>
-        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submitAdd">Add new car</button>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 
-<!-- Edit Car -->
+<!-- MODAL: Edit Car -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <form th:action="@{/modify-car}" th:method="put">
@@ -183,7 +213,7 @@
     </form>
 </div>
 
-<!-- Delete Car -->
+<!-- MODAL: Delete Car -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <form form th:action="@{/delete-car}" th:method="put">
@@ -217,7 +247,7 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
-<script type="text/javascript" th:src="@{/js/validEditModal.js}"></script>
+<script type="text/javascript" th:src="@{/js/validation.js}"></script>
 
 </body>
 

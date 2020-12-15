@@ -100,7 +100,7 @@ public class CarServiceImpl implements CarService {
             }
             case "color": {
                 try {
-                    Color valueColor = Color.valueOf(value);
+                    Color valueColor = Color.valueOf(value.toUpperCase());
                     first.get().setColor(valueColor);
                     return true;
                 } catch (IllegalArgumentException ex) {

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.pozadr.ksb2.dto.AddCar;
+import pl.pozadr.ksb2.dto.ModifyField;
 import pl.pozadr.ksb2.model.Color;
 import pl.pozadr.ksb2.service.CarServiceImpl;
 import pl.pozadr.ksb2.model.Car;
@@ -13,11 +15,11 @@ import java.util.*;
 
 
 @Controller
-public class CarApiThymeleaf {
+public class CarController {
     private final CarServiceImpl carServiceImpl;
 
     @Autowired
-    public CarApiThymeleaf(CarServiceImpl carServiceImpl) {
+    public CarController(CarServiceImpl carServiceImpl) {
         this.carServiceImpl = carServiceImpl;
     }
 
@@ -27,9 +29,6 @@ public class CarApiThymeleaf {
         if (!carServiceImpl.getCarList().isEmpty()) {
             List<Car> allCars = carServiceImpl.getCarList();
             model.addAttribute("cars", allCars);
-            model.addAttribute("newCar", new Car());
-            model.addAttribute("getByColor", new SingleParam());
-            model.addAttribute("modifyField", new ModifyField());
             return "car-main";
         }
         return "error-not-found";
@@ -44,14 +43,11 @@ public class CarApiThymeleaf {
 
 
     @GetMapping("/get-car-by-color")
-    public String getCarsByColor(@Validated Color color, Model model) {
+    public String getCarsByColor(Color color, Model model) {
         try {
             List<Car> allCarsInColor = carServiceImpl.getCarsByColor(color);
-            if (!allCarsInColor.isEmpty()) {
-                model.addAttribute("cars", allCarsInColor);
-                return "car-by-color";
-            }
-            return "error-not-found";
+            model.addAttribute("cars", allCarsInColor);
+            return "car-by-color";
         } catch (IllegalArgumentException ex) {
             System.out.println(ex.getMessage());
             return "error-input";
@@ -60,11 +56,8 @@ public class CarApiThymeleaf {
 
 
     @PostMapping("/add-car")
-    public String addCar(String mark, String model, String color) {
-        boolean isAdded = carServiceImpl.addNewCar(mark, model, color);
-        System.out.println("mark: " + mark);
-        System.out.println("model: " + model);
-        System.out.println("color: " + color);
+    public String addCar(@Validated AddCar addCar) {
+        boolean isAdded = carServiceImpl.addNewCar(addCar.getMark(), addCar.getModel(), addCar.getColor().toString());
         if (isAdded) {
             return "redirect:/car-main";
         }
@@ -83,7 +76,7 @@ public class CarApiThymeleaf {
 
 
     @RequestMapping(value = "/modify-car", method = {RequestMethod.PUT, RequestMethod.POST, RequestMethod.GET})
-    public String modifyCar(Car modifiedCar) {
+    public String modifyCar(@Validated Car modifiedCar) {
         boolean isModified = carServiceImpl.modifyCar(modifiedCar);
         if (isModified) {
             System.out.println("ok before redirect");
@@ -94,7 +87,7 @@ public class CarApiThymeleaf {
 
 
     @GetMapping("/modify-field")
-    public String modifyCarProperty(@Validated @ModelAttribute ModifyField modifyField) {
+    public String modifyCarProperty(@Validated ModifyField modifyField) {
         boolean isModified = carServiceImpl.modifyCarProperty(modifyField.getId(), modifyField.getProperty(),
                 modifyField.getValue());
         if (isModified) {
