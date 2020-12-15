@@ -1,12 +1,21 @@
-## Homework
-### PL
-#### Zadanie tydzień 4:
+# Car API
+[*Spring boot 2 academy*](https://www.akademiaspring.pl/)
 
-Rozbuduj swoją aplikację z poprzedniego tygodnia o interfejs graficzny, który umożliwi:
+## General
+REST API with car service as an example.
 
-* wyświetlanie wszystkich pozycji
-* pobieranie elementu po jego id
-* dodawanie pozycji
-* modyfikowanie pozycji
-* modyfikowanie jednego z pól pozycji
-* usuwania jednej pozycji
+## Technologies
+
+- Java 11
+- Maven
+- Spring Boot 2.4.0
+- Thymeleaf - UI
+- Swagger UI
+- Hateoas
+
+
+## Screenshots
+
+![home](./prtScr/1.png "Home")
+
+
