@@ -13,6 +13,8 @@ API with UI in Thymeleaf. Car as a model of application.
 - Bootstrap(CSS)
 - JQuery/JavaScript
 - MVC
+- DAO
+- MySQL (remotesql.com)
 
 ## Screenshots
 

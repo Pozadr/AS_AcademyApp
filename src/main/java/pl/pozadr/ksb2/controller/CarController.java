@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.pozadr.ksb2.dao.CarDao;
 import pl.pozadr.ksb2.dto.AddCar;
 import pl.pozadr.ksb2.dto.ModifyField;
 import pl.pozadr.ksb2.model.Color;
-import pl.pozadr.ksb2.service.CarServiceImpl;
 import pl.pozadr.ksb2.model.Car;
 
 import java.util.*;
@@ -16,25 +16,25 @@ import java.util.*;
 
 @Controller
 public class CarController {
-    private final CarServiceImpl carServiceImpl;
+    private final CarDao carDao;
 
     @Autowired
-    public CarController(CarServiceImpl carServiceImpl) {
-        this.carServiceImpl = carServiceImpl;
+    public CarController(CarDao carDao) {
+        this.carDao = carDao;
     }
 
 
     @GetMapping("/car-main")
     public String getCars(Model model) {
-        if (!carServiceImpl.getCarList().isEmpty()) {
-            List<Car> allCars = carServiceImpl.getCarList();
-            model.addAttribute("cars", allCars);
-            return "car-main";
-        }
-        return "error-not-found";
+        List<Car> allCars = carDao.findAllCars();
+        System.out.println("Controller:");
+        model.addAttribute("cars", allCars);
+        return "car-main";
     }
 
 
+
+    /*
     @GetMapping("/get-car-by-id")
     @ResponseBody
     public Optional<Car> getCarById(long id, Model model) {
@@ -102,4 +102,6 @@ public class CarController {
         return "redirect:/car-main";
     }
 
+
+     */
 }

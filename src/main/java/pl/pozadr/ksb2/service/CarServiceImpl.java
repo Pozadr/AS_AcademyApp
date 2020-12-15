@@ -4,28 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pozadr.ksb2.model.Car;
 import pl.pozadr.ksb2.model.Color;
-import pl.pozadr.ksb2.repository.CarRepository;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
-public class CarServiceImpl implements CarService {
+public class CarServiceImpl {
     List<Car> carList;
+    /*
 
     @Autowired
     public CarServiceImpl(CarRepository carRepository) {
         this.carList = carRepository.getCarList();
     }
 
-    @Override
-    public List<Car> getCarList() {
-        return carList.stream()
-                .sorted(Comparator.comparing(Car::getId))
-                .collect(Collectors.toList());
-    }
 
 
     public Optional<Car> getCarByID(long id) {
@@ -114,5 +109,7 @@ public class CarServiceImpl implements CarService {
         }
     }
 
+
+ */
 
 }

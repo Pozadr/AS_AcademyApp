@@ -1,9 +1,11 @@
 package pl.pozadr.ksb2.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.RepresentationModel;
 
 
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 
 public class Car extends RepresentationModel<Car>  {
     @NotNull(message = "ID cannot be null.")
@@ -23,16 +25,19 @@ public class Car extends RepresentationModel<Car>  {
     @NotNull(message = "Color cannot be null.")
     private Color color;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate productionDate;
 
     public Car() {
     }
 
 
-    public Car(long id, String mark, String model, Color color) {
+    public Car(long id, String mark, String model, Color color, LocalDate productionDate) {
         this.id = id;
         this.mark = mark;
         this.model = model;
         this.color = color;
+        this.productionDate = productionDate;
     }
 
     public long getId() {
@@ -67,13 +72,22 @@ public class Car extends RepresentationModel<Car>  {
         this.color = color;
     }
 
+    public String getProductionDate() {
+        return productionDate.toString();
+    }
+
+    public void setProductionDate(LocalDate productionDate) {
+        this.productionDate = productionDate;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
                 "id=" + id +
                 ", mark='" + mark + '\'' +
                 ", model='" + model + '\'' +
-                ", color='" + color + '\'' +
+                ", color=" + color +
+                ", productionDate=" + productionDate +
                 '}';
     }
 }

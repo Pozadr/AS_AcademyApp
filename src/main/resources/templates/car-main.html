@@ -16,14 +16,14 @@
     <h2>CAR SERVICE</h2>
 </div>
 
-<!-- Add car -->
+<!-- Add car
 <div class="container">
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" id="toggleAddModal">Add
         new car
     </button>
     <p></p>
 </div>
-
+-->
 <!-- TABLE: Cars -->
 <div class="container">
     <table class="table table-striped">
@@ -32,21 +32,29 @@
             <th scope="col">Mark:</th>
             <th scope="col">Model:</th>
             <th scope="col">Color:</th>
+            <!--
+            <th scope="col">Date:</th>
+
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
+            -->
         </tr>
         <tr th:each="car: ${cars}">
             <td th:text="${car.getId()}"></td>
             <td th:text="${car.getMark()}"></td>
             <td th:text="${car.getModel()}"></td>
             <td th:text="${car.getColor()}"></td>
+            <!--
+            <td th:text="${car.getProductionDate}"></td>
+
             <td><a th:href="@{/get-car-by-id/(id=${car.getId()})}" class="btn btn-warning editButton">Edit</a></td>
             <td><a th:href="@{/delete-car/(id=${car.getId()})}" class="btn btn-danger deleteButton">Delete</a></td>
+            -->
         </tr>
     </table>
 </div>
 
-<!-- Modify field -->
+<!-- Modify field
 <div class="container">
     <form th:action="@{/modify-field}" th:method="get">
         <div class="form-row">
@@ -76,8 +84,8 @@
         </div>
     </form>
 </div>
-
-<!-- Get car by color -->
+-->
+<!-- Get car by color
 <div class="container">
     <p></p>
     <h5>Get cars by color: </h5>
@@ -100,8 +108,8 @@
             <button type="submit" class="btn btn-primary mb-2">Get list</button>
     </form>
 </div>
-
-<!-- MODAL: Add Car -->
+-->
+<!-- MODAL: Add Car
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <form th:action="@{/add-car}" th:method="post">
@@ -153,8 +161,8 @@
         </div>
     </form>
 </div>
-
-<!-- MODAL: Edit Car -->
+-->
+<!-- MODAL: Edit Car
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <form th:action="@{/modify-car}" th:method="put">
@@ -212,8 +220,8 @@
         </div>
     </form>
 </div>
-
-<!-- MODAL: Delete Car -->
+-->
+<!-- MODAL: Delete Car
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <form form th:action="@{/delete-car}" th:method="put">
@@ -236,7 +244,7 @@
         </div>
     </form>
 </div>
-
+-->
 <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
         crossorigin="anonymous"></script>
