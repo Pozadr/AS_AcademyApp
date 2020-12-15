@@ -72,8 +72,8 @@ public class Car extends RepresentationModel<Car>  {
         this.color = color;
     }
 
-    public String getProductionDate() {
-        return productionDate.toString();
+    public LocalDate getProductionDate() {
+        return productionDate;
     }
 
     public void setProductionDate(LocalDate productionDate) {

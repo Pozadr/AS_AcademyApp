@@ -27,7 +27,6 @@ public class CarController {
     @GetMapping("/car-main")
     public String getCars(Model model) {
         List<Car> allCars = carDao.findAllCars();
-        System.out.println("Controller:");
         model.addAttribute("cars", allCars);
         return "car-main";
     }
