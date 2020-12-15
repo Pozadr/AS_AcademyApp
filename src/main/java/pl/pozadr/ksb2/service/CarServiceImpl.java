@@ -44,10 +44,15 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public boolean addNewCar(String mark, String model, String color) {
-        long maxId = carList.stream()
-                .max(Comparator.comparing(Car::getId))
-                .get()
-                .getId();
+        long maxId;
+        if (carList.isEmpty()) {
+            maxId = 0;
+        } else {
+            maxId = carList.stream()
+                    .max(Comparator.comparing(Car::getId))
+                    .get()
+                    .getId();
+        }
         Car newCar = new Car();
         newCar.setId(maxId + 1);
         newCar.setMark(mark);

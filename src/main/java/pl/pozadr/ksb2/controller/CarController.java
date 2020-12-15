@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.pozadr.ksb2.dto.AddCar;
 import pl.pozadr.ksb2.dto.ModifyField;
 import pl.pozadr.ksb2.model.Color;
-import pl.pozadr.ksb2.service.CarServiceImpl;
+import pl.pozadr.ksb2.service.CarService;
 import pl.pozadr.ksb2.model.Car;
 
 import java.util.*;
@@ -16,36 +16,33 @@ import java.util.*;
 
 @Controller
 public class CarController {
-    private final CarServiceImpl carServiceImpl;
+    private final CarService carService;
 
     @Autowired
-    public CarController(CarServiceImpl carServiceImpl) {
-        this.carServiceImpl = carServiceImpl;
+    public CarController(CarService carService) {
+        this.carService = carService;
     }
 
 
     @GetMapping("/car-main")
     public String getCars(Model model) {
-        if (!carServiceImpl.getCarList().isEmpty()) {
-            List<Car> allCars = carServiceImpl.getCarList();
-            model.addAttribute("cars", allCars);
-            return "car-main";
-        }
-        return "error-not-found";
+        List<Car> allCars = carService.getCarList();
+        model.addAttribute("cars", allCars);
+        return "car-main";
     }
 
 
     @GetMapping("/get-car-by-id")
     @ResponseBody
     public Optional<Car> getCarById(long id, Model model) {
-        return carServiceImpl.getCarByID(id);
+        return carService.getCarByID(id);
     }
 
 
     @GetMapping("/get-car-by-color")
     public String getCarsByColor(Color color, Model model) {
         try {
-            List<Car> allCarsInColor = carServiceImpl.getCarsByColor(color);
+            List<Car> allCarsInColor = carService.getCarsByColor(color);
             model.addAttribute("cars", allCarsInColor);
             return "car-by-color";
         } catch (IllegalArgumentException ex) {
@@ -57,7 +54,7 @@ public class CarController {
 
     @PostMapping("/add-car")
     public String addCar(@Validated AddCar addCar) {
-        boolean isAdded = carServiceImpl.addNewCar(addCar.getMark(), addCar.getModel(), addCar.getColor().toString());
+        boolean isAdded = carService.addNewCar(addCar.getMark(), addCar.getModel(), addCar.getColor().toString());
         if (isAdded) {
             return "redirect:/car-main";
         }
@@ -67,7 +64,7 @@ public class CarController {
 
     @GetMapping("/delete-car")
     public String deleteCar(long id) {
-        boolean isRemoved = carServiceImpl.deleteCar(id);
+        boolean isRemoved = carService.deleteCar(id);
         if (isRemoved) {
             return "redirect:/car-main";
         }
@@ -77,7 +74,7 @@ public class CarController {
 
     @RequestMapping(value = "/modify-car", method = {RequestMethod.PUT, RequestMethod.POST, RequestMethod.GET})
     public String modifyCar(@Validated Car modifiedCar) {
-        boolean isModified = carServiceImpl.modifyCar(modifiedCar);
+        boolean isModified = carService.modifyCar(modifiedCar);
         if (isModified) {
             System.out.println("ok before redirect");
             return "redirect:/car-main";
@@ -88,7 +85,7 @@ public class CarController {
 
     @GetMapping("/modify-field")
     public String modifyCarProperty(@Validated ModifyField modifyField) {
-        boolean isModified = carServiceImpl.modifyCarProperty(modifyField.getId(), modifyField.getProperty(),
+        boolean isModified = carService.modifyCarProperty(modifyField.getId(), modifyField.getProperty(),
                 modifyField.getValue());
         if (isModified) {
             return "redirect:/car-main";
