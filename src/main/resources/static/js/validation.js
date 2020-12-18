@@ -37,6 +37,7 @@ function validateEditCar() {
 // validate add Car
 let addMarkError;
 let addModelError;
+let addDateError;
 function validateAddCar() {
     // mark
     let modelAddValue = $('#markAddCar').val();
@@ -56,7 +57,21 @@ function validateAddCar() {
         $('#modelAddMessage').hide();
         addModelError = false;
     }
-    return !(addMarkError || addModelError );
+    // production date
+    let dateAddValue = $('#dateAddCar').val();
+    if (dateAddValue.length === 0) {
+        $('#dateAddMessage').show();
+        addDateError = true;
+    } else if (!(isValidDate(dateAddValue))) {
+        $('#dateAddMessage').html
+        ("**should be date format: yyyy-mm-dd");
+        $('#dateAddMessage').css("color", "red");
+        addDateError = true;
+    } else {
+        $('#dateAddMessage').hide();
+        addDateError = false;
+    }
+    return !(addMarkError || addModelError || addDateError);
 }
 
 //validate modify Field
@@ -89,18 +104,15 @@ $('#submitEdit').click(function () {
     return validateEditCar();
 });
 
-// Submit edit Car
+// Submit add Car
 $('#submitAdd').click(function () {
     return validateAddCar();
 });
 
-// Submit edit field
-$('#modifyField').click(function () {
-    return validateEditField();
-});
 
 // toggleAddModal on click
 $('#toggleAddModal').click(function () {
     $('#markAddMessage').hide();
     $('#modelAddMessage').hide();
+    $('#dateAddMessage').hide();
 });

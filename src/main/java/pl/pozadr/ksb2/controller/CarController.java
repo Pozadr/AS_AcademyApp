@@ -52,18 +52,19 @@ public class CarController {
             return "error-input";
         }
     }
-
+    */
 
     @PostMapping("/add-car")
     public String addCar(@Validated AddCar addCar) {
-        boolean isAdded = carServiceImpl.addNewCar(addCar.getMark(), addCar.getModel(), addCar.getColor().toString());
-        if (isAdded) {
+        int isAdded = carDao.saveCar(addCar.getMark(), addCar.getModel(), addCar.getColor(),
+                addCar.getProductionDate());
+        if (isAdded == 1) {
             return "redirect:/car-main";
         }
         return "error-input";
     }
 
-
+/*
     @GetMapping("/delete-car")
     public String deleteCar(long id) {
         boolean isRemoved = carServiceImpl.deleteCar(id);
@@ -84,23 +85,12 @@ public class CarController {
         return "error-input";
     }
 
-
-    @GetMapping("/modify-field")
-    public String modifyCarProperty(@Validated ModifyField modifyField) {
-        boolean isModified = carServiceImpl.modifyCarProperty(modifyField.getId(), modifyField.getProperty(),
-                modifyField.getValue());
-        if (isModified) {
-            return "redirect:/car-main";
-        }
-        return "error-input";
-    }
-
-
+*/
     @GetMapping("/go-to-home-page")
     public String goToHomePage() {
         return "redirect:/car-main";
     }
 
 
-     */
+
 }

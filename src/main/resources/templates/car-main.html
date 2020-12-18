@@ -50,37 +50,6 @@
     </table>
 </div>
 
-<!-- Modify field
-<div class="container">
-    <form th:action="@{/modify-field}" th:method="get">
-        <div class="form-row">
-            <div class="col-md-4 mb-3">
-                <label for="idEditField">Id:</label>
-                <input type="text" class="form-control" id="idEditField" name="id" placeholder="Id">
-                <div class="validated-feedback" id="idEditFieldMessage" style="color: red;">
-                    **Id is missing
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="propertyModifyField"> Property:</label>
-                <select class="form-control" id="propertyModifyField" name="property">
-                    <option value="mark">Mark</option>
-                    <option value="model">Model</option>
-                    <option value="color">Color</option>
-                </select>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="valueModifyField">Value:</label>
-                <input type="text" class="form-control" id="valueModifyField" name="value" placeholder="Value">
-                <div class="validated-feedback" id="valueEditFieldMessage" style="color: red;">
-                    **Id is missing
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary" id="modifyField">Modify field</button>
-        </div>
-    </form>
-</div>
--->
 <!-- Get car by color
 <div class="container">
     <p></p>
@@ -119,14 +88,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="markAddCar" class="col-form-label">Password</label>
+                        <label for="markAddCar" class="col-form-label">Mark</label>
                         <input type="text" class="form-control" id="markAddCar" placeholder="Mark" name="mark">
                         <p id="markAddMessage" style="color: red;">
                             **Mark is missing
                         </p>
                     </div>
                     <div class="form-group">
-                        <label for="modelAddCar" class="col-form-label">Password</label>
+                        <label for="modelAddCar" class="col-form-label">Model</label>
                         <input type="text" class="form-control" id="modelAddCar" placeholder="Model"
                                name="model">
                         <p id="modelAddMessage" style="color: red;">
@@ -147,6 +116,14 @@
                             <option value="GREY">Grey</option>
                             <option value="UNKNOWN">Unknown</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateAddCar" class="col-form-label">Production date</label>
+                        <input type="text" class="form-control" id="dateAddCar" placeholder="yyyy-MM-dd"
+                               name="productionDate">
+                        <p id="dateAddMessage" style="color: red;">
+                            **Production date is missing
+                        </p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -252,6 +229,8 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
 <script type="text/javascript" th:src="@{/js/validation.js}"></script>
+<script type="text/javascript" th:src="@{/js/validateDate.js}"></script>
+
 
 </body>
 

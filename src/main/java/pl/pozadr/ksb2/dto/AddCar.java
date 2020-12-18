@@ -1,10 +1,12 @@
 package pl.pozadr.ksb2.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import pl.pozadr.ksb2.model.Color;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 public class AddCar {
     @NotNull(message = "Mark cannot be null.")
@@ -19,6 +21,10 @@ public class AddCar {
 
     @NotNull(message = "Color cannot be null.")
     private Color color;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Model cannot be null.")
+    private LocalDate productionDate;
 
     public String getMark() {
         return mark;
@@ -42,5 +48,13 @@ public class AddCar {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public LocalDate getProductionDate() {
+        return productionDate;
+    }
+
+    public void setProductionDate(LocalDate productionDate) {
+        this.productionDate = productionDate;
     }
 }

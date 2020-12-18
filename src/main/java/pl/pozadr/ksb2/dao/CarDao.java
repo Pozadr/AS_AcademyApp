@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface CarDao {
-    void saveCar(long id, String mark, String model, Color color, LocalDate date);
+    int saveCar(String mark, String model, Color color, LocalDate date);
 
     List<Car> findAllCars();
 
