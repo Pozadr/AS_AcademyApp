@@ -4,6 +4,21 @@
 ## General
 API with UI in Thymeleaf. Car as a model of application.
 
+Features:
+* CRUD
+* Filter by color
+* Filter from/to date
+
+## Configuration 
+
+application.properties file:
+
+    spring.datasource.url=
+    spring.datasource.username=
+    spring.datasource.password=
+    spring.datasource.driver-class-name=
+
+
 ## Technologies
 - Java 11
 - Maven
@@ -18,8 +33,8 @@ API with UI in Thymeleaf. Car as a model of application.
 
 ## Screenshots
 
-![home](./prtScr/2.png "Home")
-![modify](./prtScr/3.png "Modify Car")
-![validation](./prtScr/4.png "Validation")
+![home](./prtScr/5.png "Home")
+![add](./prtScr/6.png "Add Car")
+![filter](./prtScr/7.png "Filter by date")
 
 
