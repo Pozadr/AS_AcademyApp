@@ -12,7 +12,7 @@
 <body>
 <div class="container">
     <h2>CAR SERVICE</h2>
-    <h3>List of Car by Color:</h3>
+    <h3>Filtered car list:</h3>
 </div>
 <div class="container">
     <table class="table table-striped">
@@ -21,12 +21,14 @@
             <th scope="col">Mark:</th>
             <th scope="col">Model:</th>
             <th scope="col">Color:</th>
+            <th scope="col">Date:</th>
         </tr>
         <tr th:each="car: ${cars}">
             <td th:text="${car.getId()}"></td>
             <td th:text="${car.getMark()}"></td>
             <td th:text="${car.getModel()}"></td>
             <td th:text="${car.getColor()}"></td>
+            <td th:text="${car.getProductionDate()}"></td>
         </tr>
     </table>
 </div>

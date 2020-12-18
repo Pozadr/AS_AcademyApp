@@ -40,20 +40,26 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public List<Car> findAllCars() {
-        List<Car> carList = new ArrayList<>();
         String sql = "SELECT * FROM cars";
-        List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);
-
-        // DB to POJO
-        maps.forEach(element -> carList.add(new Car(
-                Long.parseLong(String.valueOf(element.get("id"))),
-                String.valueOf(element.get("mark")),
-                String.valueOf(element.get("model")),
-                Color.valueOf(String.valueOf(element.get("color"))),
-                LocalDate.parse(String.valueOf(element.get("production_date")))
-        )));
-        return carList;
+        List<Map<String, Object>> dbOutput = jdbcTemplate.queryForList(sql);
+        return dbToPojoMapper(dbOutput);
     }
+
+    @Override
+    public List<Car> findCarsByColor(Color color) {
+        String sql = "SELECT * FROM cars WHERE color = ?";
+        List<Map<String, Object>> dbOutput = jdbcTemplate.queryForList(sql, color.toString());
+        return dbToPojoMapper(dbOutput);
+    }
+
+    @Override
+    public List<Car> findCarsByDate(LocalDate fromDate, LocalDate toDate) {
+        String sql = "SELECT * FROM cars \n" +
+                "WHERE (production_date > ? AND production_date < ?)";
+        List<Map<String, Object>> dbOutput = jdbcTemplate.queryForList(sql, fromDate.toString(), toDate.toString());
+        return dbToPojoMapper(dbOutput);
+    }
+
 
     @Override
     public int updateCar(Car newCar) {
@@ -84,5 +90,19 @@ public class CarDaoImpl implements CarDao {
             System.out.println(ex.getMessage());
             return new Car();
         }
+    }
+
+
+    private List<Car> dbToPojoMapper(List<Map<String, Object>> dbOutput) {
+        List<Car> carList = new ArrayList<>();
+        // DB to POJO
+        dbOutput.forEach(element -> carList.add(new Car(
+                Long.parseLong(String.valueOf(element.get("id"))),
+                String.valueOf(element.get("mark")),
+                String.valueOf(element.get("model")),
+                Color.valueOf(String.valueOf(element.get("color"))),
+                LocalDate.parse(String.valueOf(element.get("production_date")))
+        )));
+        return carList;
     }
 }

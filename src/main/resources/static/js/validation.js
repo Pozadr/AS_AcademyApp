@@ -89,6 +89,46 @@ function validateAddCar() {
     return !(addMarkError || addModelError || addDateError);
 }
 
+// validate filter Car by date
+let fromFilterbyDateError;
+let toFilterbyDateError;
+function validateFilterByDate() {
+    // from date
+    let fromFilterByDate = $('#fromDateFilterByDate').val();
+    if (fromFilterByDate.length === 0) {
+        $('#fromDateFilterByDateMessage').show();
+        fromFilterbyDateError = true;
+    } else if (!(isValidDate(fromFilterByDate))) {
+        $('#fromDateFilterByDateMessage').html
+        ("**should be date format: yyyy-mm-dd");
+        $('#fromDateFilterByDateMessage').css("color", "red");
+        fromFilterbyDateError = true;
+    } else {
+        $('#fromDateFilterByDateMessage').hide();
+        fromFilterbyDateError = false;
+    }
+    // to date
+    let toFilterByDate = $('#toDateFilterByDate').val();
+    if (toFilterByDate.length === 0) {
+        $('#toDateFilterByDateMessage').show();
+        toFilterbyDateError = true;
+    } else if (!(isValidDate(toFilterByDate))) {
+        $('#toDateFilterByDateMessage').html
+        ("**should be date format: yyyy-mm-dd");
+        $('#toDateFilterByDateMessage').css("color", "red");
+        toFilterbyDateError = true;
+    } else {
+        $('#toDateFilterByDateMessage').hide();
+        toFilterbyDateError = false;
+    }
+
+    return !(fromFilterbyDateError || toFilterbyDateError);
+}
+// Submit filter by date
+$('#submitFilterByDate').click(function () {
+    return validateFilterByDate();
+});
+
 // Submit edit Car
 $('#submitEdit').click(function () {
     return validateEditCar();
@@ -105,4 +145,16 @@ $('#toggleAddModal').click(function () {
     $('#markAddMessage').hide();
     $('#modelAddMessage').hide();
     $('#dateAddMessage').hide();
+});
+
+// toggleByDateModal on click
+$('#toggleByDateModal').click(function () {
+    $('#fromDateFilterByDateMessage').hide();
+    $('#toDateFilterByDateMessage').hide();
+});
+
+// toggleEditModal on click
+$('#toggleEditModal').click(function () {
+    $('#idEditFieldMessage').hide();
+    $('#valueEditFieldMessage').hide();
 });
