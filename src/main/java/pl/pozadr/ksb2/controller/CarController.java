@@ -7,8 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.pozadr.ksb2.dao.CarDao;
 import pl.pozadr.ksb2.dto.AddCar;
-import pl.pozadr.ksb2.dto.ModifyField;
-import pl.pozadr.ksb2.model.Color;
 import pl.pozadr.ksb2.model.Car;
 
 import java.util.*;
@@ -30,8 +28,6 @@ public class CarController {
         model.addAttribute("cars", allCars);
         return "car-main";
     }
-
-
 
 
     @GetMapping("/get-car-by-id")
@@ -74,23 +70,21 @@ public class CarController {
         return "error-input";
     }
 
-    /*
-        @RequestMapping(value = "/modify-car", method = {RequestMethod.PUT, RequestMethod.POST, RequestMethod.GET})
-        public String modifyCar(@Validated Car modifiedCar) {
-            boolean isModified = carServiceImpl.modifyCar(modifiedCar);
-            if (isModified) {
-                System.out.println("ok before redirect");
-                return "redirect:/car-main";
-            }
-            return "error-input";
-        }
 
-    */
+    @RequestMapping(value = "/modify-car", method = {RequestMethod.PUT, RequestMethod.POST, RequestMethod.GET})
+    public String modifyCar(@Validated Car modifiedCar) {
+        int isModified = carDao.updateCar(modifiedCar);
+        if (isModified == 1) {
+            return "redirect:/car-main";
+        }
+        return "error-input";
+    }
+
+
     @GetMapping("/go-to-home-page")
     public String goToHomePage() {
         return "redirect:/car-main";
     }
-
 
 
 }

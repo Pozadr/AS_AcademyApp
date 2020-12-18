@@ -11,7 +11,7 @@ public interface CarDao {
 
     List<Car> findAllCars();
 
-    void updateCar(Car newVideo);
+    int updateCar(Car newVideo);
 
     int deleteCar(long id);
 

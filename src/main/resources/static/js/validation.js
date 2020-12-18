@@ -2,9 +2,10 @@
 let editIdError;
 let editMarkError;
 let editModelError;
+let editDateError;
 function validateEditCar() {
     // id
-    let idEditValue = $('#idUpdate').val();
+    let idEditValue = $('#idEdit').val();
     if (idEditValue.length === 0) {
         $('#idEditMessage').show();
         editIdError = true;
@@ -13,8 +14,8 @@ function validateEditCar() {
         editIdError = false;
     }
     // mark
-    let modelEditValue = $('#markUpdate').val();
-    if (modelEditValue.length === 0) {
+    let markEditValue = $('#markEdit').val();
+    if (markEditValue.length === 0) {
         $('#markEditMessage').show();
         editMarkError = true;
     } else {
@@ -22,15 +23,29 @@ function validateEditCar() {
         editMarkError = false;
     }
     // model
-    let markEditValue = $('#modelUpdate').val();
-    if (markEditValue.length === 0) {
+    let modelEditValue = $('#modelEdit').val();
+    if (modelEditValue.length === 0) {
         $('#modelEditMessage').show();
         editModelError = true;
     } else {
         $('#modelEditMessage').hide();
         editModelError = false;
     }
-    return !(editIdError ||editMarkError || editModelError );
+    // production date
+    let dateEditValue = $('#dateEdit').val();
+    if (dateEditValue.length === 0) {
+        $('#dateEditMessage').show();
+        editDateError = true;
+    } else if (!(isValidDate(dateEditValue))) {
+        $('#dateEditMessage').html
+        ("**should be date format: yyyy-mm-dd");
+        $('#dateEditMessage').css("color", "red");
+        editDateError = true;
+    } else {
+        $('#dateEditMessage').hide();
+        editDateError = false;
+    }
+    return !(editIdError ||editMarkError || editModelError || editDateError );
 
 }
 
@@ -72,31 +87,6 @@ function validateAddCar() {
         addDateError = false;
     }
     return !(addMarkError || addModelError || addDateError);
-}
-
-//validate modify Field
-let editFieldIDError;
-let editFieldValueError;
-function validateEditField() {
-    // id
-    let modifyFieldIDValue = $('#idEditField').val();
-    if (modifyFieldIDValue.length === 0) {
-        $('#idEditFieldMessage').show();
-        editFieldIDError = true;
-    } else {
-        $('#idEditFieldMessage').hide();
-        editFieldIDError = false;
-    }
-    // value
-    let modifyFieldValueValue = $('#valueModifyField').val();
-    if (modifyFieldValueValue.length === 0) {
-        $('#valueEditFieldMessage').show();
-        editFieldValueError = true;
-    } else {
-        $('#valueEditFieldMessage').hide();
-        editFieldValueError = false;
-    }
-    return !(editFieldIDError || editFieldValueError );
 }
 
 // Submit edit Car

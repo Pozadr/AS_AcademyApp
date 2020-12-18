@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import pl.pozadr.ksb2.model.Car;
 import pl.pozadr.ksb2.model.Color;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -55,13 +56,17 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public void updateCar(Car newVideo) {
-
+    public int updateCar(Car newCar) {
+        String sql = "UPDATE cars SET cars.mark = ?, cars.model = ?, cars.color = ?, cars.production_date = ?" +
+                " WHERE id = ?";
+        return jdbcTemplate.update(sql, newCar.getMark(), newCar.getModel(), newCar.getColor().toString(),
+                Date.valueOf(newCar.getProductionDate()), newCar.getId());
     }
 
     @Override
     public int deleteCar(long id) {
-        return 0;
+        String sql = "DELETE FROM cars WHERE id = ?";
+        return jdbcTemplate.update(sql, id);
     }
 
     @Override
@@ -70,10 +75,10 @@ public class CarDaoImpl implements CarDao {
         try {
             return jdbcTemplate.queryForObject(sql,
                     (rs, rowNum) -> new Car(rs.getLong("id"),
-                                            rs.getString("mark"),
-                                            rs.getString("model"),
-                                            Color.valueOf(rs.getString("color")),
-                                            LocalDate.parse(rs.getString("production_date"))),
+                            rs.getString("mark"),
+                            rs.getString("model"),
+                            Color.valueOf(rs.getString("color")),
+                            LocalDate.parse(rs.getString("production_date"))),
                     id);
         } catch (IncorrectResultSizeDataAccessException ex) {
             System.out.println(ex.getMessage());

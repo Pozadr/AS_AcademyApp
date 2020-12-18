@@ -8,16 +8,18 @@ $(document).ready(function () {
         console.log(href);
         $.get(href, function (car, status) {
             console.log(car);
-            $('#idUpdate').val(car.id);
-            $('#markUpdate').val(car.mark);
-            $('#modelUpdate').val(car.model);
-            $('#colorUpdate').val(car.color);
+            $('#idEdit').val(car.id);
+            $('#markEdit').val(car.mark);
+            $('#modelEdit').val(car.model);
+            $('#colorEdit').val(car.color);
+            $('#dateEdit').val(car.productionDate);
         });
 
         $('#idEditMessage').hide();
         $('#markEditMessage').hide();
         $('#modelEditMessage').hide();
         $('#colorEditMessage').hide();
+        $('#dateEditMessage').hide();
 
         $('#editModal').modal();
     });
