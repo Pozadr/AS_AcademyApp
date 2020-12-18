@@ -33,14 +33,14 @@ public class CarController {
 
 
 
-    /*
+
     @GetMapping("/get-car-by-id")
     @ResponseBody
-    public Optional<Car> getCarById(long id, Model model) {
-        return carServiceImpl.getCarByID(id);
+    public Car getCarById(long id, Model model) {
+        return carDao.getOneCar(id);
     }
 
-
+    /*
     @GetMapping("/get-car-by-color")
     public String getCarsByColor(Color color, Model model) {
         try {
@@ -64,28 +64,28 @@ public class CarController {
         return "error-input";
     }
 
-/*
+
     @GetMapping("/delete-car")
     public String deleteCar(long id) {
-        boolean isRemoved = carServiceImpl.deleteCar(id);
-        if (isRemoved) {
+        int isRemoved = carDao.deleteCar(id);
+        if (isRemoved == 1) {
             return "redirect:/car-main";
         }
         return "error-input";
     }
 
-
-    @RequestMapping(value = "/modify-car", method = {RequestMethod.PUT, RequestMethod.POST, RequestMethod.GET})
-    public String modifyCar(@Validated Car modifiedCar) {
-        boolean isModified = carServiceImpl.modifyCar(modifiedCar);
-        if (isModified) {
-            System.out.println("ok before redirect");
-            return "redirect:/car-main";
+    /*
+        @RequestMapping(value = "/modify-car", method = {RequestMethod.PUT, RequestMethod.POST, RequestMethod.GET})
+        public String modifyCar(@Validated Car modifiedCar) {
+            boolean isModified = carServiceImpl.modifyCar(modifiedCar);
+            if (isModified) {
+                System.out.println("ok before redirect");
+                return "redirect:/car-main";
+            }
+            return "error-input";
         }
-        return "error-input";
-    }
 
-*/
+    */
     @GetMapping("/go-to-home-page")
     public String goToHomePage() {
         return "redirect:/car-main";

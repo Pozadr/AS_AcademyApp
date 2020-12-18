@@ -1,6 +1,7 @@
 package pl.pozadr.ksb2.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pl.pozadr.ksb2.model.Car;
@@ -32,11 +33,8 @@ public class CarDaoImpl implements CarDao {
                 .getId();
         Car newCar = new Car(maxId + 1, mark, model, color, date);
         String sql = "INSERT INTO cars VALUES (?, ?, ?, ?, ?)";
-
         return jdbcTemplate.update(sql, newCar.getId(), newCar.getMark(), newCar.getModel(),
                 newCar.getColor().toString(), newCar.getProductionDate());
-
-
     }
 
     @Override
@@ -62,12 +60,24 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public void deleteCar(long id) {
-
+    public int deleteCar(long id) {
+        return 0;
     }
 
     @Override
     public Car getOneCar(long id) {
-        return null;
+        String sql = "SELECT * FROM cars WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql,
+                    (rs, rowNum) -> new Car(rs.getLong("id"),
+                                            rs.getString("mark"),
+                                            rs.getString("model"),
+                                            Color.valueOf(rs.getString("color")),
+                                            LocalDate.parse(rs.getString("production_date"))),
+                    id);
+        } catch (IncorrectResultSizeDataAccessException ex) {
+            System.out.println(ex.getMessage());
+            return new Car();
+        }
     }
 }

@@ -13,7 +13,7 @@ public interface CarDao {
 
     void updateCar(Car newVideo);
 
-    void deleteCar(long id);
+    int deleteCar(long id);
 
     Car getOneCar(long id);
 }
