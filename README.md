@@ -27,9 +27,11 @@ application.properties file:
 - Thymeleaf
 - Bootstrap(CSS)
 - JQuery/JavaScript
-- MVC
-- DAO
 - MySQL (remotesql.com)
+
+**Design patterns**
+- Model-view-controller (MVC) 
+- Data Access Object (DAO)
 
 ## Screenshots
 
