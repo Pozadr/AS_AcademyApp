@@ -15,7 +15,7 @@ public interface CarService {
 
     List<Car> getCarsByColor(Color color);
 
-    boolean addNewCar(Car newCar) throws MethodArgumentNotValidException;
+    boolean addNewCar(Car newCar);
 
     boolean deleteCar(long id);
 

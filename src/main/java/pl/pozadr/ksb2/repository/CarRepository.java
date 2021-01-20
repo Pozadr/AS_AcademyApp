@@ -13,7 +13,7 @@ public class CarRepository {
 
     public CarRepository() {
         this.carList = new ArrayList<>();
-        carList.add(new Car(1L, "VW", "Polo", Color.BLUE));
+        carList.add(new Car(1L, "VW", "T5", Color.BLUE));
         carList.add(new Car(2L, "Volvo", "V60", Color.BLACK));
         carList.add(new Car(3L, "Mercedes", "V-Class", Color.WHITE));
         carList.add(new Car(4L, "Mercedes", "EQC", Color.BROWN));
