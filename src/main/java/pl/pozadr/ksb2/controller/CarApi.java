@@ -1,9 +1,6 @@
 package pl.pozadr.ksb2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +14,6 @@ import pl.pozadr.ksb2.model.Color;
 
 import java.util.*;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(path = "/cars", produces = {
@@ -33,55 +29,37 @@ public class CarApi {
     }
 
     @GetMapping
-    public ResponseEntity<CollectionModel<Car>> getCars() {
+    public ResponseEntity<List<Car>> getCars() {
         if (!carServiceImpl.getCarList().isEmpty()) {
             List<Car> allCars = carServiceImpl.getCarList();
-            allCars.forEach(car -> car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class).slash(car.getId()).withSelfRel()));
-            Link link = linkTo(CarApi.class)
-                    .withSelfRel();
-            CollectionModel<Car> carEntityModel = CollectionModel.of(allCars, link);
-            return ResponseEntity.ok(carEntityModel);
+            return ResponseEntity.ok(allCars);
         }
         return ResponseEntity.notFound().build();
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<Car>> getCarById(@PathVariable long id) {
+    public ResponseEntity<Car> getCarById(@PathVariable long id) {
         Optional<Car> firstCarOnList = carServiceImpl.getCarByID(id);
-        if (firstCarOnList.isPresent()) {
-            Link link = linkTo(CarApi.class).slash(id).withSelfRel();
-            //EntityModel<Car> carEntityModel = EntityModel.of(firstCarOnList.get(), link);
-            EntityModel<Car> carEntityModel = firstCarOnList.map(car -> new EntityModel(car.addIf(!car.hasLinks(), () -> link))).get();
-            return ResponseEntity.ok(carEntityModel);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.of(firstCarOnList);
     }
 
 
     @GetMapping("/color/{color}")
-    public ResponseEntity<CollectionModel<Car>> getCarsByColor(@PathVariable String color) {
+    public ResponseEntity<List<Car>> getCarsByColor(@PathVariable String color) {
         List<Car> allCarsInColor = carServiceImpl.getCarsByColor(Color.valueOf(color));
         if (!allCarsInColor.isEmpty()) {
-            allCarsInColor.forEach(car -> car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class)
-                    .slash(car.getId())
-                    .withSelfRel()));
-            allCarsInColor.forEach(car -> car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class)
-                    .withRel("allColors")));
-            Link link = linkTo(CarApi.class).slash("color").slash(color).withSelfRel();
-            CollectionModel<Car> carsCollectionModel = CollectionModel.of(allCarsInColor, link);
-            return ResponseEntity.ok(carsCollectionModel);
+            return ResponseEntity.ok(allCarsInColor);
         }
         return ResponseEntity.notFound().build();
     }
 
 
     @PostMapping
-    public ResponseEntity addCar(@Validated @RequestBody Car newCar) {
+    public ResponseEntity<Car> addCar(@Validated @RequestBody Car newCar) {
         boolean isAdded = carServiceImpl.addNewCar(newCar);
         if (isAdded) {
-            Link link = linkTo(CarApi.class).slash(newCar.getId()).withSelfRel();
-            return new ResponseEntity<>(newCar.addIf(!newCar.hasLinks(), () -> link), HttpStatus.CREATED);
+            return new ResponseEntity<>(newCar, HttpStatus.CREATED);
         }
         return new ResponseEntity("{\n\t\"id\": \"not unique.\"\n}", HttpStatus.BAD_REQUEST);
     }
