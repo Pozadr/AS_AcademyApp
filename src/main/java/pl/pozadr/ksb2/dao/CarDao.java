@@ -1,11 +1,11 @@
 package pl.pozadr.ksb2.dao;
 
-import org.apache.tomcat.jni.Local;
 import pl.pozadr.ksb2.model.Car;
 import pl.pozadr.ksb2.model.Color;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface CarDao {
     int saveCar(String mark, String model, Color color, LocalDate date);
@@ -20,5 +20,5 @@ public interface CarDao {
 
     int deleteCar(long id);
 
-    Car getOneCar(long id);
+    Optional<Car> getOneCar(long id);
 }

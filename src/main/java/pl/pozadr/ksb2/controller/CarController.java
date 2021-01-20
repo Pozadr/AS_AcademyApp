@@ -1,6 +1,7 @@
 package pl.pozadr.ksb2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -33,10 +34,10 @@ public class CarController {
     }
 
 
-    @GetMapping("/get-car-by-id")
-    @ResponseBody
-    public Car getCarById(long id, Model model) {
-        return carDao.getOneCar(id);
+    @GetMapping( "/get-car-by-id")
+    public ResponseEntity<Car> getCarById(@RequestParam long id, Model model) {
+        Optional<Car> carOpt = carDao.getOneCar(id);
+        return carOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 

@@ -9,10 +9,7 @@ import pl.pozadr.ksb2.model.Color;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class CarDaoImpl implements CarDao {
@@ -76,19 +73,20 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public Car getOneCar(long id) {
+    public Optional<Car> getOneCar(long id) {
         String sql = "SELECT * FROM cars WHERE id = ?";
         try {
-            return jdbcTemplate.queryForObject(sql,
+            Car car = jdbcTemplate.queryForObject(sql,
                     (rs, rowNum) -> new Car(rs.getLong("id"),
                             rs.getString("mark"),
                             rs.getString("model"),
                             Color.valueOf(rs.getString("color")),
                             LocalDate.parse(rs.getString("production_date"))),
                     id);
+            return Optional.ofNullable(car);
         } catch (IncorrectResultSizeDataAccessException ex) {
             System.out.println(ex.getMessage());
-            return new Car();
+            return Optional.empty();
         }
     }
 
