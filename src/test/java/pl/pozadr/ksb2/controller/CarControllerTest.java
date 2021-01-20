@@ -69,7 +69,22 @@ class CarControllerTest {
     }
 
     @Test
-    void getCarsByColor() {
+    void shouldReturnListOfCarsInColor() throws Exception {
+        List<Car> cars = List.of(
+                new Car(1L, "VW", "T5", Color.BROWN,
+                        LocalDate.of(2011, 2, 20)),
+                new Car(2L, "VW", "T4", Color.BROWN,
+                        LocalDate.of(1995, 5, 11)),
+                new Car(3L, "Volvo", "V70", Color.BROWN,
+                        LocalDate.of(2003, 2, 6)),
+                new Car(4L, "Mercedes", "V-Class", Color.BROWN,
+                        LocalDate.of(2020, 3, 4)));
+        when(carDao.findCarsByColor(Color.BROWN)).thenReturn(cars);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/get-car-by-color"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(view().name("filtered-car-list"))
+                .andExpect(model().attributeExists("cars"));
     }
 
     @Test
