@@ -56,10 +56,10 @@ class CarControllerTest {
     void shouldReturnCarById() throws Exception {
         Car testCar = new Car(1L, "VW", "T5", Color.BROWN,
                 LocalDate.of(2011, 2, 20));
-        when(carDao.getOneCar(anyInt())).thenReturn(Optional.of(testCar));
+        when(carDao.getOneCar(testCar.getId())).thenReturn(Optional.of(testCar));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/get-car-by-id/")
-                .param("id", "1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/get-car-by-id")
+                .param("id", String.valueOf(testCar.getId())))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Is.is(1)))
