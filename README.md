@@ -9,4 +9,5 @@ REST API with car service as an example.
 - Maven
 - Spring Boot 2.4.0
 - Swagger UI
-- Hateoas
+- Mockito
+- JUnit5
