@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.pozadr.ksb2.dao.CarDaoImpl;
+import pl.pozadr.ksb2.dto.AddCar;
 import pl.pozadr.ksb2.model.Car;
 import pl.pozadr.ksb2.model.Color;
 
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -167,18 +169,34 @@ class CarControllerTest {
     }
 
     @Test
-    void addCar() {
+    void shouldAddCarAndRedirectToMainPage() throws Exception {
+        AddCar newCar = new AddCar("VW", "Polo", Color.BLUE, LocalDate.of(2019, 3, 4));
+        when(carDao.saveCar(any(), any(), any(), any())).thenReturn(1);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/add-car")
+                .param("mark", newCar.getMark())
+                .param("model", newCar.getModel())
+                .param("color", String.valueOf(newCar.getColor()))
+                .param("productionDate", String.valueOf(newCar.getProductionDate())))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(view().name("redirect:/car-main"));
     }
 
     @Test
-    void deleteCar() {
+    void shouldDeleteCarAndRedirectToMainPage() throws Exception {
+        when(carDao.deleteCar(anyLong())).thenReturn(1);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/delete-car")
+                .param("id", "1"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(view().name("redirect:/car-main"));
     }
 
     @Test
-    void modifyCar() {
+    void shouldModifyCarAndRedirectToMainPage() {
     }
 
     @Test
-    void goToHomePage() {
+    void shouldRedirectToMainPage() {
     }
 }
