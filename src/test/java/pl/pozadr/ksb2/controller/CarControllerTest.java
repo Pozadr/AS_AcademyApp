@@ -1,5 +1,6 @@
 package pl.pozadr.ksb2.controller;
 
+import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -45,11 +45,28 @@ class CarControllerTest {
                         LocalDate.of(2020, 3, 4)));
 
         when(carDao.findAllCars()).thenReturn(cars);
-
         mockMvc.perform(MockMvcRequestBuilders.get("/car-main"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(view().name("car-main"))
-                .andExpect(model().attributeExists("cars"));
+                .andExpect(model().attributeExists("cars"))
+                .andExpect(model().attribute("cars", Matchers.hasSize(4)))
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(1L)),
+                        Matchers.<Car>hasProperty("mark", Is.is("VW")),
+                        Matchers.<Car>hasProperty("model", Is.is("T5")),
+                        Matchers.<Car>hasProperty("color", Is.is(Color.BROWN)),
+                        Matchers.<Car>hasProperty("productionDate",
+                                Is.is(LocalDate.of(2011, 2, 20)))))))
+
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(4L)),
+                        Matchers.<Car>hasProperty("mark", Is.is("Mercedes")),
+                        Matchers.<Car>hasProperty("model", Is.is("V-Class")),
+                        Matchers.<Car>hasProperty("color", Is.is(Color.BROWN)),
+                        Matchers.<Car>hasProperty("productionDate",
+                                Is.is(LocalDate.of(2020, 3, 4)))
+                ))));
+
     }
 
     @Test
@@ -81,14 +98,72 @@ class CarControllerTest {
                         LocalDate.of(2020, 3, 4)));
         when(carDao.findCarsByColor(Color.BROWN)).thenReturn(cars);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/get-car-by-color"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/get-car-by-color")
+                .param("color", "BROWN"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(view().name("filtered-car-list"))
-                .andExpect(model().attributeExists("cars"));
-    }
+                .andExpect(model().attributeExists("cars"))
+                .andExpect(model().attribute("cars", Matchers.hasSize(4)))
+
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(1L)),
+                        Matchers.<Car>hasProperty("color", Is.is(Color.BROWN))))))
+
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(2L)),
+                        Matchers.<Car>hasProperty("color", Is.is(Color.BROWN))))))
+
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(3L)),
+                        Matchers.<Car>hasProperty("color", Is.is(Color.BROWN))))))
+
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(4L)),
+                        Matchers.<Car>hasProperty("color", Is.is(Color.BROWN))))));
+        }
 
     @Test
-    void getCarsByDate() {
+    void shouldReturnListOfCarsByDate() throws Exception {
+        List<Car> cars = List.of(
+                new Car(1L, "VW", "T5", Color.BROWN,
+                        LocalDate.of(2011, 2, 20)),
+                new Car(2L, "VW", "T4", Color.BROWN,
+                        LocalDate.of(2005, 5, 11)),
+                new Car(3L, "Volvo", "V70", Color.BROWN,
+                        LocalDate.of(2003, 2, 6)),
+                new Car(4L, "Mercedes", "V-Class", Color.BROWN,
+                        LocalDate.of(2019, 3, 4)));
+        String from = "2004-01-01";
+        String to = "2020-01-01";
+        when(carDao.findCarsByDate(LocalDate.parse(from), LocalDate.parse(to))).thenReturn(cars);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/get-car-by-date")
+                .param("from", "2004-01-01")
+                .param("to", "2020-01-01"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(view().name("filtered-car-list"))
+                .andExpect(model().attributeExists("cars"))
+                .andExpect(model().attribute("cars", Matchers.hasSize(4)))
+
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(1L)),
+                        Matchers.<Car>hasProperty("productionDate",
+                                Is.is(LocalDate.of(2011, 2, 20)))))))
+
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(2L)),
+                        Matchers.<Car>hasProperty("productionDate",
+                                Is.is(LocalDate.of(2005, 5, 11)))))))
+
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(3L)),
+                        Matchers.<Car>hasProperty("productionDate",
+                                Is.is(LocalDate.of(2003, 2, 6)))))))
+
+                .andExpect(model().attribute("cars", Matchers.hasItem(Matchers.allOf(
+                        Matchers.<Car>hasProperty("id", Is.is(4L)),
+                        Matchers.<Car>hasProperty("productionDate",
+                                Is.is(LocalDate.of(2019, 3, 4)))))));
     }
 
     @Test

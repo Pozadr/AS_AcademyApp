@@ -42,7 +42,7 @@ public class CarController {
 
 
     @GetMapping("/get-car-by-color")
-    public String getCarsByColor(Color color, Model model) {
+    public String getCarsByColor(@RequestParam Color color, Model model) {
         try {
             List<Car> allCarsInColor = carDao.findCarsByColor(color);
             model.addAttribute("cars", allCarsInColor);
@@ -54,7 +54,7 @@ public class CarController {
     }
 
     @GetMapping("/get-car-by-date")
-    public String getCarsByDate(String from, String to, Model model) {
+    public String getCarsByDate(@RequestParam String from, @RequestParam String to, Model model) {
         try {
             List<Car> allCarsBetweenDate = carDao.findCarsByDate(LocalDate.parse(from),
                     LocalDate.parse(to));
