@@ -2,7 +2,7 @@
 [*Spring boot 2 academy*](https://www.akademiaspring.pl/)
 
 ## General
-API with UI in Thymeleaf. Car as a model of application.
+API with UI in Thymeleaf. Car as a model of application. The MVC tests performed using Mockito and JUnit5.
 
 Features:
 * CRUD
@@ -28,6 +28,8 @@ application.properties file:
 - Bootstrap(CSS)
 - JQuery/JavaScript
 - MySQL (remotesql.com)
+- Mockito
+- Junit5
 
 **Design patterns**
 - Model-view-controller (MVC) 
@@ -38,5 +40,7 @@ application.properties file:
 ![home](./prtScr/5.png "Home")
 ![add](./prtScr/6.png "Add Car")
 ![filter](./prtScr/7.png "Filter by date")
+![MVC_tests](./prtScr/8.png "MVC tests")
+
 
 
