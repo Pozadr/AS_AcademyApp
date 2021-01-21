@@ -64,7 +64,7 @@ class CarControllerTest {
                         Matchers.<Car>hasProperty("id", Is.is(4L)),
                         Matchers.<Car>hasProperty("mark", Is.is("Mercedes")),
                         Matchers.<Car>hasProperty("model", Is.is("V-Class")),
-                        Matchers.<Car>hasProperty("color", Is.is(Color.BROWN)),
+                        Matchers.<Car>hasProperty("color", Is.is(Color.BLUE)),
                         Matchers.<Car>hasProperty("productionDate",
                                 Is.is(LocalDate.of(2020, 3, 4)))
                 ))));
@@ -193,10 +193,24 @@ class CarControllerTest {
     }
 
     @Test
-    void shouldModifyCarAndRedirectToMainPage() {
+    void shouldModifyCarAndRedirectToMainPage() throws Exception {
+        Car modifiedCar = new Car(1L,"VW", "Polo", Color.BLUE, LocalDate.of(2019, 3, 4));
+        when(carDao.updateCar(any())).thenReturn(1);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/modify-car")
+                .param("id", String.valueOf(modifiedCar.getId()))
+                .param("mark", modifiedCar.getMark())
+                .param("model", modifiedCar.getModel())
+                .param("color", String.valueOf(modifiedCar.getColor()))
+                .param("productionDate", String.valueOf(modifiedCar.getProductionDate())))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(view().name("redirect:/car-main"));
     }
 
     @Test
-    void shouldRedirectToMainPage() {
+    void shouldRedirectToMainPage() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/go-to-home-page"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(view().name("redirect:/car-main"));
     }
 }
