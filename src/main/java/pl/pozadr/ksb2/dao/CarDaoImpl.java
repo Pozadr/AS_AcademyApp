@@ -29,11 +29,10 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public int saveCar(String mark, String model, Color color, LocalDate date) {
-        Car newCar = new Car(mark, model, color, date);
         try {
             String sql = "INSERT INTO cars(mark, model, color, production_date) VALUES (?, ?, ?, ?)";
-            return jdbcTemplate.update(sql, newCar.getMark(), newCar.getModel(),
-                    newCar.getColor().toString(), newCar.getProductionDate());
+            return jdbcTemplate.update(sql, mark, model,
+                    color.toString(), date);
         } catch (DataAccessException e) {
             logger.error("Cannot connect with DB!");
             e.printStackTrace();
