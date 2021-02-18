@@ -17,6 +17,9 @@ application.properties file:
     spring.datasource.username=
     spring.datasource.password=
     spring.datasource.driver-class-name=
+    spring.datasource.initialization-mode=always
+    spring.datasource.data= classpath:/data.sql
+    spring.jpa.show-sql=true
 
 
 ## Technologies

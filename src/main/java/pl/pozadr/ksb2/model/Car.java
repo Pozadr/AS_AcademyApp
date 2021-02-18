@@ -39,6 +39,13 @@ public class Car {
         this.productionDate = productionDate;
     }
 
+    public Car(String mark, String model, Color color, LocalDate productionDate) {
+        this.mark = mark;
+        this.model = model;
+        this.color = color;
+        this.productionDate = productionDate;
+    }
+
     public long getId() {
         return id;
     }

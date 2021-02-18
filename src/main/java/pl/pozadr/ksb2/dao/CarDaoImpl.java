@@ -1,6 +1,9 @@
 package pl.pozadr.ksb2.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -8,13 +11,15 @@ import pl.pozadr.ksb2.model.Car;
 import pl.pozadr.ksb2.model.Color;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
 @Repository
 public class CarDaoImpl implements CarDao {
-
+    Logger logger = LoggerFactory.getLogger(CarDaoImpl.class);
     private final JdbcTemplate jdbcTemplate;
+
 
     @Autowired
     public CarDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -24,16 +29,18 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public int saveCar(String mark, String model, Color color, LocalDate date) {
-        List<Car> allCars = findAllCars();
-        long maxId = allCars.stream()
-                .max(Comparator.comparing(Car::getId))
-                .get()
-                .getId();
-        Car newCar = new Car(maxId + 1, mark, model, color, date);
-        String sql = "INSERT INTO cars VALUES (?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, newCar.getId(), newCar.getMark(), newCar.getModel(),
-                newCar.getColor().toString(), newCar.getProductionDate());
+        Car newCar = new Car(mark, model, color, date);
+        try {
+            String sql = "INSERT INTO cars(mark, model, color, production_date) VALUES (?, ?, ?, ?)";
+            return jdbcTemplate.update(sql, newCar.getMark(), newCar.getModel(),
+                    newCar.getColor().toString(), newCar.getProductionDate());
+        } catch (DataAccessException e) {
+            logger.error("Cannot connect with DB!");
+            e.printStackTrace();
+        }
+        return 0;
     }
+
 
     @Override
     public List<Car> findAllCars() {
@@ -42,6 +49,7 @@ public class CarDaoImpl implements CarDao {
         return dbToPojoMapper(dbOutput);
     }
 
+
     @Override
     public List<Car> findCarsByColor(Color color) {
         String sql = "SELECT * FROM cars WHERE color = ?";
@@ -49,10 +57,10 @@ public class CarDaoImpl implements CarDao {
         return dbToPojoMapper(dbOutput);
     }
 
+
     @Override
     public List<Car> findCarsByDate(LocalDate fromDate, LocalDate toDate) {
-        String sql = "SELECT * FROM cars \n" +
-                "WHERE (production_date > ? AND production_date < ?)";
+        String sql = "SELECT * FROM cars WHERE (production_date > ? AND production_date < ?)";
         List<Map<String, Object>> dbOutput = jdbcTemplate.queryForList(sql, fromDate.toString(), toDate.toString());
         return dbToPojoMapper(dbOutput);
     }
@@ -66,11 +74,13 @@ public class CarDaoImpl implements CarDao {
                 Date.valueOf(newCar.getProductionDate()), newCar.getId());
     }
 
+
     @Override
     public int deleteCar(long id) {
         String sql = "DELETE FROM cars WHERE id = ?";
         return jdbcTemplate.update(sql, id);
     }
+
 
     @Override
     public Optional<Car> getOneCar(long id) {
