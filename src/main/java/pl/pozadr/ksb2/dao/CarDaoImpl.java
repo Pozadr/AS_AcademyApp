@@ -31,8 +31,7 @@ public class CarDaoImpl implements CarDao {
     public int saveCar(String mark, String model, Color color, LocalDate date) {
         try {
             String sql = "INSERT INTO cars(mark, model, color, production_date) VALUES (?, ?, ?, ?)";
-            return jdbcTemplate.update(sql, mark, model,
-                    color.toString(), date);
+            return jdbcTemplate.update(sql, mark, model, color.toString(), date);
         } catch (DataAccessException e) {
             logger.error("Cannot connect with DB!");
             e.printStackTrace();

@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.pozadr.ksb2.dao.CarDao;
 import pl.pozadr.ksb2.dto.AddCar;
+import pl.pozadr.ksb2.exceptions.carnotfound.CarNotFoundExceptionRequest;
 import pl.pozadr.ksb2.model.Car;
 import pl.pozadr.ksb2.model.Color;
 
@@ -34,10 +35,11 @@ public class CarController {
     }
 
 
-    @GetMapping( "/get-car-by-id")
+    @GetMapping("/get-car-by-id")
     public ResponseEntity<Car> getCarById(@RequestParam long id, Model model) {
         Optional<Car> carOpt = carDao.getOneCar(id);
-        return carOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return carOpt.map(ResponseEntity::ok)
+                .orElseThrow(() -> new CarNotFoundExceptionRequest(id));
     }
 
 
